@@ -1,6 +1,6 @@
 #include "event_loop_worker.hpp"
 
-namespace Bluestone {
+namespace bluestone {
 
   EventLoopWorker::~EventLoopWorker() {
     work_.reset();
@@ -10,4 +10,4 @@ namespace Bluestone {
     }
   }
 
-}  // namespace Bluestone
+}  // namespace bluestone

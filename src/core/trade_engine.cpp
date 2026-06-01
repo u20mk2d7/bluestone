@@ -7,10 +7,10 @@
 #include "exchange/i_exchange_connector.hpp"
 #include "trade_queue.hpp"
 
-namespace Bluestone {
+namespace bluestone {
   DataGatewayEngine::DataGatewayEngine(
-      std::unique_ptr<Bluestone::IExchangeConnector> exchange,
-      std::shared_ptr<Bluestone::TradeQueue> queue)
+      std::unique_ptr<bluestone::IExchangeConnector> exchange,
+      std::shared_ptr<bluestone::TradeQueue> queue)
       : exchange_(std::move(exchange)),
         queue_(std::move(queue)),
         running_(false) {}
@@ -22,7 +22,7 @@ namespace Bluestone {
     running_.store(true, std::memory_order_release);
 
     while (running_.load(std::memory_order_acquire)) {
-      Bluestone::TradeEvent event;
+      bluestone::TradeEvent event;
       // pop() is lock-free. It returns instantly without asking the OS for a
       // mutex lock.
       if (queue_->pop(event)) {
@@ -52,4 +52,4 @@ namespace Bluestone {
     exchange_->disconnect();
   }
 
-}  // namespace Bluestone
+}  // namespace bluestone

@@ -1,7 +1,7 @@
 from conan import ConanFile
 from conan.tools.cmake import cmake_layout
 
-class Bluestone(ConanFile):
+class bluestone(ConanFile):
     name = "bluestone"
     version = "1.0.0"
     

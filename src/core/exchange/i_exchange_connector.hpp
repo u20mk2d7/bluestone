@@ -8,7 +8,7 @@
 #include <string>
 #include <utility>
 
-namespace Bluestone {
+namespace bluestone {
   class IExchangeConnector {
    public:
     virtual ~IExchangeConnector() = default;
@@ -24,5 +24,5 @@ namespace Bluestone {
     virtual void subscribe_market_data(int req_id,
                                        const std::string& symbol) = 0;
   };
-}  // namespace Bluestone
+}  // namespace bluestone
 #endif  // IEXCHANGECONNECTOR_HPP

@@ -3,9 +3,10 @@
 message(STATUS "Configuring utilities...")
 
 add_library(bluestone_utils STATIC
-    config.cpp
     event_loop_worker.cpp
-    cli.cpp
+    cfg_util.cpp
+    cli_util.cpp
+    file_util.cpp
 )
 
 target_include_directories(bluestone_utils PUBLIC 
@@ -17,6 +18,8 @@ target_link_libraries(bluestone_utils PUBLIC
     bluestone_pch
     Boost::boost
     simdjson::simdjson
+    absl::flags  
+    absl::flags_parse
     
 )
 

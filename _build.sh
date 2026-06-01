@@ -3,11 +3,11 @@ set -e  # Exit immediately if a command fails
 # 2. Clean previous build (optional but recommended during heavy changes)
 #rm -rf build/
 mkdir -p build/
-echo "=== Bluestone Build & Run Script ===" 
+echo "=== bluestone Build & Run Script ===" 
 
 # 1. Sync Code (Optional - uncomment when needed)
-# git pull 
-# git add . && git commit -m "update" && git push origin main
+git pull 
+git add . && git commit -m "update" && git push origin main
 
 # 3. Conan Dependency Management
 echo "Installing Conan dependencies..."
@@ -26,7 +26,7 @@ echo "Building project..."
 cmake --build build -j 6 
 
 # 6. Run the executable
-echo "Running Bluestone..." 
+echo "Running bluestone..." 
 
 ./build/bluestone "$@"
 

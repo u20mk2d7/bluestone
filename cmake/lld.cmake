@@ -1,5 +1,5 @@
 # cmake/lld.cmake
-message(STATUS "Configuring LLD linker and LTO...")
+message(STATUS "Configuring LLD Interprocedural Optimization (IPO) / Link Time Optimization (LTO)")
 
 # Use LLVM LLD linker (much faster linking)
 add_link_options("-fuse-ld=lld")
@@ -18,4 +18,4 @@ if(supported)
     endif()
 endif()
 
-message(STATUS "LLD linker and Link-time optimization (LTO)")
+message(STATUS "LLD Interprocedural Optimization (IPO) / Link Time Optimization (LTO)")

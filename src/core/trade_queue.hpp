@@ -5,7 +5,7 @@
 #include <array>
 #include <boost/lockfree/spsc_queue.hpp>
 
-namespace Bluestone {
+namespace bluestone {
 
   // 1. The ultra-fast, fixed-size memory struct (Zero Heap Allocation)
   struct TradeEvent {
@@ -17,9 +17,9 @@ namespace Bluestone {
 
   // 2. The Lock-Free Ring Buffer (10,000 slots pre-allocated in RAM)
   using TradeQueue =
-      boost::lockfree::spsc_queue<Bluestone::TradeEvent,
+      boost::lockfree::spsc_queue<bluestone::TradeEvent,
                                   boost::lockfree::capacity<10000>>;
 
-}  // namespace Bluestone
+}  // namespace bluestone
 
 #endif  // TRADE_QUEUE_HPP

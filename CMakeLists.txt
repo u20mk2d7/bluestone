@@ -52,4 +52,4 @@ target_link_libraries(bluestone PRIVATE
 )
 
 set_target_properties(bluestone PROPERTIES UNITY_BUILD ON)
-message(STATUS "Bluestone configured successfully!")
+message(STATUS "bluestone configured successfully!")

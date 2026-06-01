@@ -1,4 +1,4 @@
-# 🏛️ Project Bluestone: High-Frequency Trading Architecture Blueprint
+# 🏛️ Project bluestone: High-Frequency Trading Architecture Blueprint
 
 **Objective:** To engineer a low-latency, institutional-grade Quantitative Trading Infrastructure that bridges traditional finance (TradFi) and cryptocurrency markets. The system is built on C++23, strictly adhering to zero-allocation hot paths, lock-free concurrency, and hardware-level thread affinity.
 
@@ -25,6 +25,9 @@
 * **The Golden Rule:** Tier 4 applications are **strictly banned** from communicating with the C++ trading engine (Tiers 1 & 2). They may only query the PostgreSQL database in Tier 3 to prevent any latency spikes in the core engine.
 
 ---
+### Note:
+all code need clean code like Uncle Bob Teach, and follow design pattern software architecture
+with rule coding: LLVM, google convention and cpp core guideline:
 
 ## 🌍 Infrastructure & Deployment Topology
 
@@ -142,16 +145,6 @@ Networking: Utilize Network Interface Cards (NICs) with hardware PTP timestampin
 
 🚀 Execution Strategy: Horizontal Scaling
 Launch multiple independent instances of the compiled binary, locked to separate CPU cores, driven dynamically by JSON configurations.
-
-Bash
-# Terminal 1: Run Binance BTC Bot pinned to Physical Core 4
-taskset -c 4 ./TradingBot --config .env/binance_btc.json --instance 1
-
-# Terminal 2: Run Binance ETH Bot pinned to Physical Core 5
-taskset -c 5 ./TradingBot --config .env/binance_eth.json --instance 2
-
-# Terminal 3: Run OKX Bot pinned to Physical Core 6
-taskset -c 6 ./TradingBot --config .env/okx.json --instance 3
 
 ***
 

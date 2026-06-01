@@ -6,9 +6,6 @@ add_library(bluestone_gateways STATIC
     # Binance WebSocket
     binance/binance_connector.cpp
     
-    # Binance FIX
-    binance/fix_binance_connector.cpp
-
     # Other exchanges later
     # interactivebrokers/tws_connector.cpp
 )

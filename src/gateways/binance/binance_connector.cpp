@@ -10,10 +10,10 @@
 #include <boost/beast/websocket.hpp>
 #include <iostream>
 
-namespace Bluestone {
+namespace bluestone {
 
-  BinanceConnector::BinanceConnector(Bluestone::ExchangeConfig* cfg,
-                                     Bluestone::TradeQueue* queue,
+  BinanceConnector::BinanceConnector(bluestone::ExchangeConfig* cfg,
+                                     bluestone::TradeQueue* queue,
                                      boost::asio::io_context* ioc)
       : cfg_(cfg), queue_(queue), ioc_(ioc) {
     std::cout << "[BinanceConnector] Initialized for " << cfg->symbol << "\n";
@@ -217,4 +217,4 @@ namespace Bluestone {
       std::cerr << "[Binance] Parse exception: " << e.what() << '\n';
     }
   }
-}  // namespace Bluestone
+}  // namespace bluestone

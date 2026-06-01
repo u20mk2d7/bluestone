@@ -12,12 +12,12 @@
 #include "core/trade_queue.hpp"
 #include "utils/config.hpp"
 
-namespace Bluestone {
+namespace bluestone {
 
   class BinanceConnector : public IExchangeConnector {
    private:
-    Bluestone::ExchangeConfig* cfg_;  // Non-owning pointer to config
-    Bluestone::TradeQueue* queue_;    // Lock-free queue (non-owning)
+    bluestone::ExchangeConfig* cfg_;  // Non-owning pointer to config
+    bluestone::TradeQueue* queue_;    // Lock-free queue (non-owning)
     boost::asio::io_context* ioc_;    // Worker thread's io_context
     void read_next_message();
     // WebSocket connection (managed inside async context)
@@ -32,8 +32,8 @@ namespace Bluestone {
     void process_market_data(const std::string& json_data);
 
    public:
-    explicit BinanceConnector(Bluestone::ExchangeConfig* cfg,
-                              Bluestone::TradeQueue* queue,
+    explicit BinanceConnector(bluestone::ExchangeConfig* cfg,
+                              bluestone::TradeQueue* queue,
                               boost::asio::io_context* ioc);
 
     ~BinanceConnector() override;
@@ -49,6 +49,6 @@ namespace Bluestone {
     void subscribe_market_data(int req_id, const std::string& symbol) override;
   };
 
-}  // namespace Bluestone
+}  // namespace bluestone
 
 #endif  // BINANCE_CONNECTOR_HPP

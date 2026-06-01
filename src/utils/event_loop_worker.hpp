@@ -1,6 +1,6 @@
 #pragma once
-#ifndef EVENT_LOOP_WORKER_HPP
-#define EVENT_LOOP_WORKER_HPP
+#ifndef BLUESTONE_UTILS_EVENT_LOOP_WORKER_HPP
+#define BLUESTONE_UTILS_EVENT_LOOP_WORKER_HPP
 
 #include <boost/asio.hpp>
 #include <iostream>
@@ -13,7 +13,7 @@
 #include <mach/thread_policy.h>
 #endif
 
-namespace Bluestone {
+namespace bluestone {
 
   class EventLoopWorker {
    private:
@@ -58,6 +58,6 @@ namespace Bluestone {
     boost::asio::io_context& get_ioc() { return ioc_; }
   };
 
-}  // namespace Bluestone
+}  // namespace bluestone
 
-#endif  // EVENT_LOOP_WORKER_HPP
+#endif  // BLUESTONE_UTILS_EVENT_LOOP_WORKER_HPP

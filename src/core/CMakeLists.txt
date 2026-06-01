@@ -1,6 +1,6 @@
 # src/core/CMakeLists.txt
 
-message(STATUS "Configuring Bluestone Core Engine...")
+message(STATUS "Configuring bluestone Core Engine...")
 
 add_library(bluestone_core STATIC
     trade_engine.cpp
