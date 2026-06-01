@@ -75,6 +75,31 @@ TradingBotFramework/
     │   └── interactivebrokers/
     └── bots/
         └── main.cpp               # Dynamic Entry point with core pinning
+
+src/
+├── core/
+│   ├── exchange/              # Abstract interfaces
+│   │   ├── i_exchange_connector.hpp
+│   │   └── i_fix_session.hpp
+│   ├── fix/                   # FIX Protocol Core
+│   │   ├── fix_session.hpp
+│   │   ├── fix_session.cpp
+│   │   ├── quickfix_wrapper.hpp   # Thin wrapper over QuickFIX
+│   │   └── message_handler.hpp
+│   ├── marketdata/
+│   ├── risk/
+│   ├── strategy/
+│   └── trade_engine.hpp
+├── gateways/
+│   ├── binance/
+│   │   ├── binance_connector.hpp/cpp        # WebSocket (current)
+│   │   ├── binance_fix_connector.hpp/cpp    # NEW: FIX version
+│   │   └── binance_api.hpp
+│   ├── okx/
+│   └── interactivebrokers/
+├── utils/
+└── main.cpp
+
 ⚡ Critical Techniques for Sub-Microsecond Performance
 1. Minimize Allocations & Copying
 Memory Pools: Use custom memory pool allocators. Zero new or malloc calls after initialization.
