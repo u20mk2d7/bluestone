@@ -1,11 +1,16 @@
 # 🏛️ Project bluestone: High-Frequency Trading Architecture Blueprint
 
 **Objective:** To engineer a low-latency, institutional-grade Quantitative Trading Infrastructure that bridges traditional finance (TradFi) and cryptocurrency markets. The system is built on C++23, strictly adhering to zero-allocation hot paths, lock-free concurrency, and hardware-level thread affinity.
+**Objective:** To engineer a low-latency, institutional-grade Quantitative Trading Infrastructure bridging TradFi (IBKR, FIX) and cryptocurrency markets (Binance, OKX, Coinbase).
+## ⚠️ AI ASSISTANT DIRECTIVES: STRICT CODING STANDARDS
+Whenever generating C++ code for Project Bluestone, the AI must strictly adhere to the following:
+* **Language:** Pure C++ latest.
+* **Style & Linting:** Strict adherence to the LLVM coding standards, Google C++ Style Guide, and C++ Core Guidelines.
+* **Architecture:** Uncle Bob's Clean Code principles, SOLID design, and appropriate Gang of Four (GoF) Design Patterns.
+* **Performance Rule:** Zero heap allocations (`new`/`malloc`), zero mutex locks, and zero `std::string` copies in the Hot Path (Tier 1) after initial startup.
 
----
 
 ## ⏱️ The Latency Horizons (Execution Tiers)
-
 ### Tier 1: The Hot Path (1 - 100 Nanoseconds)
 * **Purpose:** The Core Trading Engine. This is where market data is parsed, the Order Book is maintained, and the actual decision to "Buy" or "Sell" is executed.
 * **Technology:** Pure C++23 running in main RAM and L1/L2 CPU Cache. Utilizes `simdjson` for zero-allocation JSON parsing and `absl::flat_hash_map` for ultra-fast Order Book lookups.
@@ -25,17 +30,16 @@
 * **The Golden Rule:** Tier 4 applications are **strictly banned** from communicating with the C++ trading engine (Tiers 1 & 2). They may only query the PostgreSQL database in Tier 3 to prevent any latency spikes in the core engine.
 
 ---
-### Note:
-all code need clean code like Uncle Bob Teach, and follow design pattern software architecture
-with rule coding: LLVM, google convention and cpp core guideline:
 
 ## 🌍 Infrastructure & Deployment Topology
 
 ### Core Dependencies
-1. **QuickFIX / TWSAPI:** Built from source and vendored locally for absolute hermetic builds.
-2. **PostgreSQL:** For persistent relational state.
+1. **QuickFIX / QuantLib:** Built from source and vendored locally for absolute hermetic builds.
+2. **TWSAPI:** download source and save to root/third_party folder then use cmake link to library, protobuf build
+2. **PostgreSQL:** For persistent relational state. ()
 3. **Valkey:** For in-memory, distributed state sharing.
 4. **ZeroMQ / WebSockets:** For high-throughput internal routing and exchange connections.
+5. **PostgreSQL:** Abseil, Boost, simdjson, Protobuf, OpenSSL
 
 ### Deployment Flow
 ```text
@@ -160,4 +164,3 @@ Your documentation is locked in. Looking at your list of components at the botto
 
 My recommendation is to start with **#2 (Optimized CMakeLists.txt)** so we lock in the `-O3 -march=native -flto` compiler flags, followed immediately by **#3 (Core Bot Skeleton)** to get the `taskset` and CPU affinity logic actually running in C++. 
 
-Which one are we writing first?
