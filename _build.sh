@@ -11,7 +11,7 @@ mkdir -p build/
 echo "=== bluestone Build & Run Script ===" 
 
 echo "Installing Conan dependencies..."
-#conan install . --output-folder=build --build=missing --update -s build_type=Release
+conan install . --output-folder=build --build=missing --update -s build_type=Release
 
 
 # 4. CMake Configuration
