@@ -129,9 +129,8 @@ taskset -c 4 ./build/bluestone --mode fix --config .env/binance_btc.json --insta
 
 # Terminal 2: Run Exness FIX Bot pinned to Physical Core 5
 taskset -c 5 ./build/bluestone --mode websocket --config .env/coinbase_fix.json --instance 2
-
 ```
 
-```
-
+``` Resource
+# https://en.wikipedia.org/wiki/List_of_electronic_trading_platforms
 ```
