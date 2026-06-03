@@ -7,7 +7,7 @@ mkdir -p build/
 echo "=== bluestone Build & Run Script ===" 
 
 # 1. Sync Code (Optional - uncomment when needed)
-git pull 
+#git pull 
 git add . && git commit -m "update" && git push origin main
 
 # 3. Conan Dependency Management
