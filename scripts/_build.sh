@@ -1,6 +1,7 @@
 #!/bin/bash
 set -e  # Exit immediately if a command fails
 # 2. Clean previous build (optional but recommended during heavy changes)
+cd ../
 #rm -rf build/
 mkdir -p build/
 echo "=== bluestone Build & Run Script ===" 
