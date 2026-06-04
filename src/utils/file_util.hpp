@@ -6,11 +6,11 @@
 
 namespace bluestone {
 
-    class FileUtil {
-    public:
-        static std::string read_key_file(std::string_view file_path);
-    };
+  class FileUtil {
+   public:
+    static std::string read_key_file(std::string_view file_path);
+  };
 
-} // namespace bluestone
+}  // namespace bluestone
 
-#endif // BLUESTONE_UTILS_FILE_UTIL_HPP
+#endif  // BLUESTONE_UTILS_FILE_UTIL_HPP

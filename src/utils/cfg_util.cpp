@@ -29,9 +29,8 @@ namespace bluestone {
       return cfg;
     }
 
-    // simdjson::dom::parser parser;
     simdjson::ondemand::parser parser;
-    simdjson::dom::element doc;  // simdjson::ondemand::document doc;
+    simdjson::dom::element doc;
     simdjson::error_code parse_error = parser.iterate(json_data).get(doc);
     if (parse_error) {
       std::cerr << "[Config] Invalid JSON syntax in file: " << path_to_file

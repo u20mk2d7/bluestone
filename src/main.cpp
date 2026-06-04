@@ -12,10 +12,13 @@
 #include <memory>
 #include <string>
 
-#include "absl/flags/flag.h"
-#include "absl/flags/parse.h"
 #include "core/exchange/i_exchange_connector.hpp"
 #include "core/trade_engine.hpp"
 #include "gateways/binance/binance_connector.hpp"
+#include "utils/cli_util.hpp"
 #include "utils/event_loop_worker.hpp"
-int main(int argc, char** argv) { return 0; }
+
+int main(int argc, char** argv) {
+  bluestone::CLI::parse(argc, argv);
+  return 0;
+}
