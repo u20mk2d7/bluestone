@@ -7,29 +7,26 @@
 #include <cstdint>
 
 namespace Bluestone {
-namespace Utils {
 
 struct ExchangeConfig {
-    std::string mode;
+    std::string exchange;             // e.g., "binance", "ctrader", "ibkr"
     std::string host;
     std::string port;
     std::string target;
     std::string symbol;
     std::string event_type;
     std::string api_key;
-    std::string api_passphrase; // Added for cTrader Password
+    std::string api_passphrase;
     std::string private_key;
-    std::string quickfix_config_path; // 🚀 Added for FIX gateways
+    std::string quickfix_config_path; // Used if exchange relies on QuickFIX
     uint32_t instance_id = 0;
 };
 
 class BootManager {
 public:
-    // Parses CLI. JSON loading is now completely OPTIONAL.
     static ExchangeConfig initialize(int argc, char** argv);
 };
 
-} // namespace Utils
 } // namespace Bluestone
 
 #endif // BLUESTONE_UTILS_BOOT_MANAGER_HPP
