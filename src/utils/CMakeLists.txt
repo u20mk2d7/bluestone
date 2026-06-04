@@ -4,9 +4,7 @@ message(STATUS "Configuring utilities...")
 
 add_library(bluestone_utils STATIC
     event_loop_worker.cpp
-    cfg_util.cpp
-    cli_util.cpp
-    file_util.cpp
+    boot_manager.cpp
 )
 
 target_include_directories(bluestone_utils PUBLIC 
