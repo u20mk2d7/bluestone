@@ -17,13 +17,15 @@ struct ExchangeConfig {
     std::string symbol;
     std::string event_type;
     std::string api_key;
+    std::string api_passphrase; // Added for cTrader Password
     std::string private_key;
+    std::string quickfix_config_path; // 🚀 Added for FIX gateways
     uint32_t instance_id = 0;
 };
 
 class BootManager {
 public:
-    // Parses the CLI arguments, finds the JSON file, parses it, and returns the strict config object.
+    // Parses CLI. JSON loading is now completely OPTIONAL.
     static ExchangeConfig initialize(int argc, char** argv);
 };
 
