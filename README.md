@@ -133,4 +133,7 @@ taskset -c 5 ./build/bluestone --mode websocket --config .env/coinbase_fix.json 
 
 ``` Resource
 # https://en.wikipedia.org/wiki/List_of_electronic_trading_platforms
+# https://en.wikipedia.org/wiki/Financial_Information_eXchange
+# https://en.wikipedia.org/wiki/FIXatdl
+
 ```
