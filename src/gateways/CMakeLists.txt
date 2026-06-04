@@ -24,7 +24,7 @@ target_link_libraries(bluestone_gateways PUBLIC
     OpenSSL::SSL
     OpenSSL::Crypto
     Boost::program_options
-    intel_dfp
+    intel_dfp # intel decimal floating point math library
     abseil::abseil
 )
 

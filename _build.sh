@@ -5,13 +5,13 @@ git add . && git commit -m "update" && git push origin main
 
 
 # 2. Clean previous build (optional but recommended during heavy changes)
-rm -rf build/
-mkdir -p build/
+#rm -rf build/
+#mkdir -p build/
 
 echo "=== bluestone Build & Run Script ===" 
 
 echo "Installing Conan dependencies..."
-conan install . --output-folder=build --build=missing --update -s build_type=Release
+#conan install . --output-folder=build --build=missing --update -s build_type=Release
 
 
 # 4. CMake Configuration
@@ -20,7 +20,7 @@ cmake -S . -B build -G Ninja -DCMAKE_TOOLCHAIN_FILE=build/build/Release/generato
 
 # 5. Compilation
 echo "Building project..."
-cmake --build build -j 6 
+cmake --build build -j 4
 
 # 6. Synchronize Runtime Assets into Build Folder
 echo "Syncing FIX configuration assets..."

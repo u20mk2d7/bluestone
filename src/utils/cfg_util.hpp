@@ -17,21 +17,21 @@
   */
 namespace bluestone {
 
-struct ExchangeConfig {
-  std::string host;
-  std::string port;
-  std::string target;
-  std::string symbol;
-  std::string event_type;
-  std::string api_key;
-  std::string private_key;
-};
+  struct ExchangeConfig {
+    std::string host;
+    std::string port;
+    std::string target;
+    std::string symbol;
+    std::string event_type;
+    std::string api_key;
+    std::string private_key;
+  };
 
-class ConfigParser {
- public:
-  // Reads a JSON file from .env/ and populates the struct
-  static ExchangeConfig parse_json(std::string_view path_to_file);
-};
+  class ConfigParser {
+   public:
+    // Reads a JSON file from .env/ and populates the struct
+    static ExchangeConfig parse_json(std::string_view path_to_file);
+  };
 
 }  // namespace bluestone
 
