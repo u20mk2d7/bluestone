@@ -3,7 +3,6 @@
 #include "utils/boot_manager.hpp"
 
 int main(int argc, char** argv) {
-  bluestone::BootManager::initialize(argc, argv);
   // 1. Initialize and capture the returned config object
   bluestone::ExchangeConfig cfg =
       bluestone::BootManager::initialize(argc, argv);

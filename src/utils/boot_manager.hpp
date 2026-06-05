@@ -16,8 +16,9 @@ namespace bluestone {
     std::string symbol;
     std::string event_type;
     std::string api_key;
+    std::string public_key;
     std::string private_key;
-    std::string cfg_file;  // .env/abc.json
+    std::string cfg_file;
     uint32_t instance_id = 0;
   };
 

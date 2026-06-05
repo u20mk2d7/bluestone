@@ -10,7 +10,7 @@
 
 #include "core/exchange/i_exchange_connector.hpp"
 #include "core/trade_queue.hpp"
-#include "utils/cfg_util.hpp"
+#include "utils/boot_manager.hpp"
 
 namespace bluestone {
 

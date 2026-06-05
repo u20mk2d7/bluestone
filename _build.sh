@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e  # Exit immediately if a command fails
-git pull 
-git add . && git commit -m "update" && git push origin main
+#git pull 
+#git add . && git commit -m "update" && git push origin main
 
 
 # 2. Clean previous build (optional but recommended during heavy changes)
