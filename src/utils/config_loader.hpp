@@ -29,6 +29,7 @@ namespace bluestone {
     static ExchangeConfig load(int argc, char** argv);
     static constexpr std::string_view trim(std::string_view sv) noexcept;
     static std::string read_key_file(const std::string& filepath) noexcept;
+    
   };
 
 }  // namespace bluestone

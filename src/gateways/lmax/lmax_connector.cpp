@@ -12,58 +12,87 @@
 #include <string>
 
 #include "lmax_connector.hpp"
+namespace bluestone {
+LMAXConnector::LMAXConnector(const std::string& config_file) {
+  settings_ = std::make_unique<FIX::SessionSettings>(config_file);
+  store_factory_ = std::make_unique<FIX::FileStoreFactory>(*settings_);
+  log_factory_ = std::make_unique<FIX::FileLogFactory>(*settings_);
 
-// Handle incoming Execution Reports (35=8)
-void LMAXApplication::onMessage(const FIX44::ExecutionReport& message,
-                                const FIX::SessionID& sessionID) {
-  FIX::OrderID orderID;
-  FIX::ExecType execType;
-
-  // Safely extract fields if they exist
-  if (message.isSetField(orderID)) message.get(orderID);
-  if (message.isSetField(execType)) message.get(execType);
-
-  std::cout << "\n[TRADING] Execution Report Received!" << std::endl;
-  std::cout << "Order ID: " << orderID.getValue()
-            << " | ExecType: " << execType.getValue() << std::endl;
+  initiator_ = std::make_unique<FIX::ThreadedSocketInitiator>(
+      *this, *store_factory_, *settings_, *log_factory_);
 }
 
-// Handle incoming Market Data (35=W)
-void LMAXApplication::onMessage(
-    const FIX44::MarketDataSnapshotFullRefresh& message,
-    const FIX::SessionID& sessionID) {
-  FIX::Symbol symbol;
-  if (message.isSetField(symbol)) message.get(symbol);
+LMAXConnector::~LMAXConnector() { disconnect(); }
 
-  std::cout << "\n[MARKET DATA] Price Update for: " << symbol.getValue()
-            << std::endl;
+void LMAXConnector::connect() {
+  std::cout << "[LMAX] Igniting QuickFIX Initiator...\n";
+  initiator_->start();
+}
 
-  // 1. Extract the NoMDEntries field to get the total count
-  FIX::NoMDEntries noMDEntries;
-  if (message.isSetField(noMDEntries)) {
-    message.get(noMDEntries);  // Get the count of repeating groups
-
-    FIX44::MarketDataSnapshotFullRefresh::NoMDEntries group;
-    FIX::MDEntryType entryType;
-    FIX::MDEntryPx entryPx;
-
-    // 2. Loop using the extracted value
-    for (int i = 1; i <= noMDEntries.getValue(); ++i) {
-      message.getGroup(i, group);
-      group.get(entryType);
-      group.get(entryPx);
-
-      if (entryType == FIX::MDEntryType_BID) {
-        std::cout << "   BID: " << entryPx.getValue() << std::endl;
-      } else if (entryType == FIX::MDEntryType_OFFER) {
-        std::cout << "   ASK: " << entryPx.getValue() << std::endl;
-      }
-    }
+void LMAXConnector::disconnect() {
+  if (initiator_) {
+    std::cout << "[LMAX] Stopping Initiator...\n";
+    initiator_->stop();
   }
 }
 
+void LMAXConnector::reconnect() {
+  std::cout << "[LMAX] Reconnecting...\n";
+  disconnect();
+  connect();
+}
+
+void LMAXConnector::subscribe_market_data(int req_id,
+                                          const std::string& symbol) {
+  std::cout << "[LMAX] Sending Market Data Request for " << symbol << "\n";
+  // Add market data FIX payload generation here later
+}
+
+void LMAXConnector::onCreate(const FIX::SessionID& sessionID) {
+  std::cout << "Session Created: " << sessionID << std::endl;
+}
+
+void LMAXConnector::onLogon(const FIX::SessionID& sessionID) {
+  if (sessionID.getTargetCompID() == "LMXBDMD") {
+    std::cout << "Market Data session connected!" << std::endl;
+  } else if (sessionID.getTargetCompID() == "LMXBDD") {
+    std::cout << "Trading session connected!" << std::endl;
+  }
+}
+
+void LMAXConnector::onLogout(const FIX::SessionID& sessionID) {
+  std::cout << "Logout - Session: " << sessionID << std::endl;
+}
+
+void LMAXConnector::toAdmin(FIX::Message& message,
+                            const FIX::SessionID& sessionID) {
+  FIX::MsgType msgType;
+  message.getHeader().getField(msgType);
+
+  if (msgType == FIX::MsgType_Logon) {
+    message.setField(FIX::Username("DuyHaDemo"));
+    // LMAX requires Tag 554 for Password.
+    // Note: Make sure to check if you need to use FIX::Password instead of
+    // RawData
+    message.setField(FIX::Password(readconfig from file.env / app.cfg));
+    message.setField(FIX::ResetSeqNumFlag(true));
+  }
+}
+
+void LMAXConnector::fromAdmin(const FIX::Message& message,
+                              const FIX::SessionID& sessionID) {}
+
+void LMAXConnector::toApp(FIX::Message& message,
+                          const FIX::SessionID& sessionID) {}
+
+void LMAXConnector::fromApp(const FIX::Message& message,
+                            const FIX::SessionID& sessionID) {
+  // CRITICAL: This routes incoming messages to the correct onMessage() callback
+  crack(message, sessionID);
+}
+
 // Call this function AFTER your Market Data session successfully logs on
-void LMAXApplication::requestMarketData(const std::string& instrumentId) {
+void LMAXConnector::requestMarketData(const std::string& instrumentId) {
   FIX44::MarketDataRequest mdRequest;
 
   // 1. MDReqID (Tag 262): A unique identifier you create for this request
@@ -102,45 +131,53 @@ void LMAXApplication::requestMarketData(const std::string& instrumentId) {
             << std::endl;
 }
 
-// Implementation of the methods declared in lmax_connector.hpp
-void LMAXApplication::onCreate(const FIX::SessionID& sessionID) {
-  std::cout << "Session Created: " << sessionID << std::endl;
+// Handle incoming Execution Reports (35=8)
+void LMAXConnector::onMessage(const FIX44::ExecutionReport& message,
+                              const FIX::SessionID& sessionID) {
+  FIX::OrderID orderID;
+  FIX::ExecType execType;
+
+  // Safely extract fields if they exist
+  if (message.isSetField(orderID)) message.get(orderID);
+  if (message.isSetField(execType)) message.get(execType);
+
+  std::cout << "\n[TRADING] Execution Report Received!" << std::endl;
+  std::cout << "Order ID: " << orderID.getValue()
+            << " | ExecType: " << execType.getValue() << std::endl;
 }
 
-void LMAXApplication::onLogon(const FIX::SessionID& sessionID) {
-  if (sessionID.getTargetCompID() == "LMXBDMD") {
-    std::cout << "Market Data session connected!" << std::endl;
-  } else if (sessionID.getTargetCompID() == "LMXBDD") {
-    std::cout << "Trading session connected!" << std::endl;
+// Handle incoming Market Data (35=W)
+void LMAXConnector::onMessage(
+    const FIX44::MarketDataSnapshotFullRefresh& message,
+    const FIX::SessionID& sessionID) {
+  FIX::Symbol symbol;
+  if (message.isSetField(symbol)) message.get(symbol);
+
+  std::cout << "\n[MARKET DATA] Price Update for: " << symbol.getValue()
+            << std::endl;
+
+  // 1. Extract the NoMDEntries field to get the total count
+  FIX::NoMDEntries noMDEntries;
+  if (message.isSetField(noMDEntries)) {
+    message.get(noMDEntries);  // Get the count of repeating groups
+
+    FIX44::MarketDataSnapshotFullRefresh::NoMDEntries group;
+    FIX::MDEntryType entryType;
+    FIX::MDEntryPx entryPx;
+
+    // 2. Loop using the extracted value
+    for (int i = 1; i <= noMDEntries.getValue(); ++i) {
+      message.getGroup(i, group);
+      group.get(entryType);
+      group.get(entryPx);
+
+      if (entryType == FIX::MDEntryType_BID) {
+        std::cout << "   BID: " << entryPx.getValue() << std::endl;
+      } else if (entryType == FIX::MDEntryType_OFFER) {
+        std::cout << "   ASK: " << entryPx.getValue() << std::endl;
+      }
+    }
   }
 }
 
-void LMAXApplication::onLogout(const FIX::SessionID& sessionID) {
-  std::cout << "Logout - Session: " << sessionID << std::endl;
-}
-
-void LMAXApplication::toAdmin(FIX::Message& message,
-                              const FIX::SessionID& sessionID) {
-  FIX::MsgType msgType;
-  message.getHeader().getField(msgType);
-
-  if (msgType == FIX::MsgType_Logon) {
-    message.setField(FIX::Username("DuyHaDemo"));
-    // LMAX requires Tag 554 for Password.
-    // Note: Make sure to check if you need to use FIX::Password instead of
-    // RawData
-    message.setField(FIX::Password(readconfig from file.env / app.cfg));
-    message.setField(FIX::ResetSeqNumFlag(true));
-  }
-}
-
-void LMAXApplication::fromAdmin(const FIX::Message& message,
-                                const FIX::SessionID& sessionID) {}
-
-void LMAXApplication::toApp(FIX::Message& message,
-                            const FIX::SessionID& sessionID) {}
-
-void LMAXApplication::fromApp(const FIX::Message& message,
-                              const FIX::SessionID& sessionID) {
-  crack(message, sessionID);
-}
+}  // namespace bluestone

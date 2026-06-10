@@ -1,40 +1,26 @@
-#include <quickfix/FileLog.h>
-#include <quickfix/FileStore.h>
-#include <quickfix/SessionSettings.h>
-#include <quickfix/SocketInitiator.h>
-#include <quickfix/ThreadedSocketInitiator.h>
-
+#include <chrono>
 #include <iostream>
+#include <memory>
+#include <thread>
 
+#include "core/exchange/i_exchange_connector.hpp"
 #include "gateways/lmax/lmax_connector.hpp"
+#include "utils/config_loader.hpp"
 
 int main(int argc, char** argv) {
-  try {
-    // 1. Load the configuration file
-    FIX::SessionSettings settings(".env/lmax.cfg");
+  std::cout << "=================================================\n";
+  std::cout << " Project Bluestone HFT Engine\n";
+  std::cout << "=================================================\n";
 
-    // 2. Instantiate your application
-    LMAXApplication application;
+  // 1. Initialize Gateway via polymorphic interface
+  std::unique_ptr<bluestone::IExchangeConnector> gateway =
+      std::make_unique<bluestone::LMAXConnector>(".env/lmax.cfg");
 
-    // 3. Set up storage and logging
-    FIX::FileStoreFactory storeFactory(settings);
-    FIX::FileLogFactory logFactory(settings);
+  // 2. Ignite connection
+  gateway->connect();
 
-    // 4. Initialize the Initiator
-    FIX::ThreadedSocketInitiator initiator(application, storeFactory, settings,
-                                           logFactory);
+  std::cout << "[Main] Initiator started. Engine is live.\n";
+  std::cout << "[Main] Press Ctrl+C to stop.\n\n";
 
-    // 5. Start the connection
-    initiator.start();
-
-    std::cout << "Initiator started. Press ENTER to stop." << std::endl;
-    std::cin.get();
-
-    initiator.stop();
-    return 0;
-
-  } catch (const std::exception& e) {
-    std::cerr << "Error: " << e.what() << std::endl;
-    return 1;
-  }
+  return 0;
 }
