@@ -29,3 +29,7 @@ target_link_libraries(bluestone PRIVATE
 set_target_properties(bluestone PROPERTIES UNITY_BUILD ON)
 
 message(STATUS "Main executable 'bluestone' configured.")
+configure_file(
+    "${CMAKE_CURRENT_SOURCE_DIR}/.env/lmax.cfg"
+    COPYONLY
+)

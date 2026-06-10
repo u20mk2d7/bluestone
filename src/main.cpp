@@ -1,24 +1,40 @@
+#include <quickfix/FileLog.h>
+#include <quickfix/FileStore.h>
+#include <quickfix/SessionSettings.h>
+#include <quickfix/SocketInitiator.h>
+#include <quickfix/ThreadedSocketInitiator.h>
+
 #include <iostream>
 
-#include "utils/boot_manager.hpp"
+#include "gateways/lmax/lmax_connector.hpp"
 
 int main(int argc, char** argv) {
-  // 1. Initialize and capture the returned config object
-  bluestone::ExchangeConfig cfg =
-      bluestone::BootManager::initialize(argc, argv);
+  try {
+    // 1. Load the configuration file
+    FIX::SessionSettings settings(".env/lmax.cfg");
 
-  // 2. Print the parsed values to verify the Abseil and simdjson logic
-  std::cout << "\n=== [TEST] Parsed Configuration ===\n";
-  std::cout << "Exchange    : " << cfg.exchange << "\n";
-  std::cout << "Config File : " << cfg.cfg_file << "\n";
-  std::cout << "Instance ID : " << cfg.instance_id << "\n";
-  std::cout << "Host        : " << cfg.host << "\n";
-  std::cout << "Port        : " << cfg.port << "\n";
-  std::cout << "Target      : " << cfg.target << "\n";
-  std::cout << "Symbol      : " << cfg.symbol << "\n";
-  std::cout << "Event Type  : " << cfg.event_type << "\n";
-  std::cout << "API Key     : " << cfg.api_key << "\n";
-  std::cout << "Private Key : " << cfg.private_key << "\n";
-  std::cout << "===================================\n\n";
-  return 0;
+    // 2. Instantiate your application
+    LMAXApplication application;
+
+    // 3. Set up storage and logging
+    FIX::FileStoreFactory storeFactory(settings);
+    FIX::FileLogFactory logFactory(settings);
+
+    // 4. Initialize the Initiator
+    FIX::ThreadedSocketInitiator initiator(application, storeFactory, settings,
+                                           logFactory);
+
+    // 5. Start the connection
+    initiator.start();
+
+    std::cout << "Initiator started. Press ENTER to stop." << std::endl;
+    std::cin.get();
+
+    initiator.stop();
+    return 0;
+
+  } catch (const std::exception& e) {
+    std::cerr << "Error: " << e.what() << std::endl;
+    return 1;
+  }
 }

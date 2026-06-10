@@ -10,16 +10,18 @@
 
 #include "core/exchange/i_exchange_connector.hpp"
 #include "core/trade_queue.hpp"
-#include "utils/boot_manager.hpp"
+#include "utils/config_loader.hpp"
 
 namespace bluestone {
 
-  class BinanceConnector : public IExchangeConnector {
+  class BinanceConnector : public bluestone::IExchangeConnector {
    private:
     bluestone::ExchangeConfig* cfg_;  // Non-owning pointer to config
     bluestone::TradeQueue* queue_;    // Lock-free queue (non-owning)
     boost::asio::io_context* ioc_;    // Worker thread's io_context
+
     void read_next_message();
+
     // WebSocket connection (managed inside async context)
     std::unique_ptr<boost::beast::websocket::stream<
         boost::asio::ssl::stream<boost::asio::ip::tcp::socket>>>

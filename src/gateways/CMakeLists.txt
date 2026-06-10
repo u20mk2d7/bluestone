@@ -5,9 +5,7 @@ message(STATUS "Configuring exchange gateways...")
 add_library(bluestone_gateways STATIC
     # Binance WebSocket
     binance/binance_connector.cpp
-    
-    # Other exchanges later
-    # interactivebrokers/tws_connector.cpp
+    lmax/lmax_connector.cpp
 )
 
 target_include_directories(bluestone_gateways PUBLIC 
