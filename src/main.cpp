@@ -9,33 +9,14 @@
 
 int main(int argc, char** argv) {
   std::cout << "=================================================\n";
-  std::cout << " Project Bluestone HFT Engine\n";
+  std::cout << " Trading is Running ...\n";
   std::cout << "=================================================\n";
+  bluestone::ExchangeConfig exchange_cfg =
+      bluestone::ConfigLoader::load(argc, argv);
 
-  // 1. Initialize Gateway via polymorphic interface
-  std::unique_ptr<bluestone::IExchangeConnector> gateway_lmax =
-      std::make_unique<bluestone::LMAXConnector>(".env/lmax.cfg");
+  std::unique_ptr<bluestone::IExchangeConnector> gateway =
+      std::make_unique<bluestone::LMAXConnector>(exchange_cfg.cfg_file);
 
-  // 2. Ignite connection
-  gateway_lmax->connect();
-
-  std::cout << "[Main] Initiator started. Engine is live.\n";
-  std::cout << "[Main] Press Ctrl+C to stop.\n\n";
-
-  // 1. Setup all the heavy dependencies
-  ExchangeConfig cfg = load_config();
-  auto queue = std::make_unique<TradeQueue>();
-  auto risk = std::make_unique<RiskEngine>();
-
-  // 2. The Polymorphic Pointer
-  std::unique_ptr<bluestone::IExchangeConnector> gateway;
-
-  // 3. Feed the IBKR constructor its "many, many arguments"
-  gateway = std::make_unique<bluestone::IBKRConnector>(
-      cfg, queue.get(), "127.0.0.1", 999, risk.get());
-
-  // 4. The rest of your program only sees the simple interface!
   gateway->connect();
-
   return 0;
 }

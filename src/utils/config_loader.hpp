@@ -10,8 +10,8 @@ namespace bluestone {
 
   struct ExchangeConfig {
     std::string exchange;  // e.g., "binance", "ctrader", "ibkr"
+    std::string cfg_file;
     uint32_t instance_id = 0;
-    std::string password;
 
     std::string host;
     std::string port;
@@ -19,9 +19,10 @@ namespace bluestone {
     std::string symbol;
     std::string event_type;
     std::string api_key;
-    std::string public_key;
     std::string private_key;
-    std::string cfg_file;
+
+    std::string user_id;
+    std::string password;
   };
 
   class ConfigLoader {
@@ -29,7 +30,6 @@ namespace bluestone {
     static ExchangeConfig load(int argc, char** argv);
     static constexpr std::string_view trim(std::string_view sv) noexcept;
     static std::string read_key_file(const std::string& filepath) noexcept;
-    
   };
 
 }  // namespace bluestone

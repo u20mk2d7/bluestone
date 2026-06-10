@@ -66,7 +66,7 @@ namespace bluestone {
                                //
       std::string_view value =
           trim(std::string_view(line).substr(delimiter_pos + 1));
-      // Map the parsed keys directly into the C++ struct
+
       if (key == "host") {
         exchange_cfg.host = std::string(value);
       } else if (key == "port") {
@@ -81,8 +81,14 @@ namespace bluestone {
         exchange_cfg.api_key = std::string(value);
       } else if (key == "private_key") {
         exchange_cfg.private_key = std::string(value);
+      } else if (key == "user_id") {
+        exchange_cfg.user_id = std::string(value);
       } else if (key == "password") {
         exchange_cfg.password = std::string(value);
+      } else {
+        std::cout
+            << "=== [ERROR]: bluestone::ConfigLoader::load(.. , ..) wrong key="
+            << key << '\n';
       }
     }
 
