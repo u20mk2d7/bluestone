@@ -3,7 +3,6 @@
 message(STATUS "Configuring exchange gateways...")
 
 add_library(bluestone_gateways STATIC
-    # Binance WebSocket
     binance/binance_connector.cpp
     lmax/lmax_connector.cpp
 )
@@ -16,6 +15,7 @@ target_link_libraries(bluestone_gateways PUBLIC
     bluestone_core
     bluestone_utils
     bluestone_pch
+    
     quickfix::quickfix
     Boost::boost
     simdjson::simdjson

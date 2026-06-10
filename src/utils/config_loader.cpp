@@ -9,7 +9,7 @@
 
 // CLI Flag: ABSL_FLAG(type, name, default, help-text)
 // ./app --exchange binance --config .env/binance.cfg --instance 1
-// ./app --exchange ctrader --config .env/initiator.cfg --instance 2
+// ./app --exchange ctrader --config .env/lmax.cfg --instance 2
 
 ABSL_FLAG(std::string, exchange, "", "Exchange (e.g., ctrader, binance,...)");
 ABSL_FLAG(std::string, config, "", "Path to the Json, cfg file");

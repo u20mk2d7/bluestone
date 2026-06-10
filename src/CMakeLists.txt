@@ -16,7 +16,7 @@ target_include_directories(bluestone PRIVATE
 )
 
 target_link_libraries(bluestone PRIVATE 
-    bluestone_core
+    bluestone_core_exchange
     bluestone_utils
     bluestone_gateways
     bluestone_pch
@@ -29,7 +29,8 @@ target_link_libraries(bluestone PRIVATE
 set_target_properties(bluestone PROPERTIES UNITY_BUILD ON)
 
 message(STATUS "Main executable 'bluestone' configured.")
-configure_file(
-    "${CMAKE_CURRENT_SOURCE_DIR}/.env/lmax.cfg"
-    COPYONLY
-)
+
+#configure_file(
+#    "${CMAKE_CURRENT_SOURCE_DIR}/.env/lmax.cfg"
+#    COPYONLY
+#)

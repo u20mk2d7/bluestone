@@ -124,11 +124,10 @@ bluestone/
 Launch multiple independent instances of the compiled binary, locked to separate CPU cores, driven dynamically by JSON configurations.
 
 ```bash
-# Terminal 1: Run Binance BTC Bot pinned to Physical Core 4
-taskset -c 4 ./build/bluestone --mode fix --config .env/binance_btc.json --instance 1
-
-# Terminal 2: Run Exness FIX Bot pinned to Physical Core 5
-taskset -c 5 ./build/bluestone --mode websocket --config .env/coinbase_fix.json --instance 2
+# Terminal 1: Run bluestone pinned to Physical Core 4 and bluestone has instance 1
+taskset -c 4 ./build/bluestone --exchange binance --config .env/binance.cfg --instance 1
+# Terminal 2: Run bluestone pinned to Physical Core 5 and bluestone has instance 2
+taskset -c 5 ./build/bluestone --exchange lmax --config .env/lmax.cfg --instance 2
 ```
 
 ``` Resource
