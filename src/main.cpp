@@ -11,12 +11,14 @@ int main(int argc, char** argv) {
   std::cout << "=================================================\n";
   std::cout << " Trading is Running ...\n";
   std::cout << "=================================================\n";
-  bluestone::ExchangeConfig exchange_cfg =
-      bluestone::ConfigLoader::load(argc, argv);
+  bluestone::ExchangeConfig cfg = bluestone::ConfigLoader::load(argc, argv);
 
   std::unique_ptr<bluestone::IExchangeConnector> gateway =
-      std::make_unique<bluestone::LMAXConnector>(exchange_cfg.cfg_file);
+      std::make_unique<bluestone::LMAXConnector>(cfg);
 
   gateway->connect();
+  while (true) {
+    std::this_thread::sleep_for(std::chrono::seconds(1));
+  }
   return 0;
 }

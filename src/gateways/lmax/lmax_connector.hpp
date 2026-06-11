@@ -15,25 +15,21 @@
 #include <string>
 
 #include "core/exchange/i_exchange_connector.hpp"
+#include "utils/config_loader.hpp"
 
 namespace bluestone {
   class LMAXConnector : public bluestone::IExchangeConnector,
                         public FIX::Application,
                         public FIX::MessageCracker {
     //
-   public:
-    explicit LMAXConnector(const std::string& config_file);
-    ~LMAXConnector() override;
-    LMAXConnector(const LMAXConnector&);
-    LMAXConnector(LMAXConnector&&) noexcept;
-    LMAXConnector& operator=(const LMAXConnector&);
-    LMAXConnector& operator=(LMAXConnector&&) noexcept;
-
-    // --- IExchangeConnector Implementations ---
-    void connect() override;
-    void reconnect() override;
-    void disconnect() override;
-    void subscribe_market_data(int req_id, const std::string& symbol) override;
+   private:
+    // --- Encapsulated QuickFIX State ---
+    bluestone::ExchangeConfig cfg_;
+    std::unique_ptr<FIX::SessionSettings> settings_;
+    std::unique_ptr<FIX::FileStoreFactory> store_factory_;
+    std::unique_ptr<FIX::FileLogFactory> log_factory_;
+    std::unique_ptr<FIX::ThreadedSocketInitiator> initiator_;
+    // --- ----
 
     void onCreate(const FIX::SessionID& sessionID) override;
     void onLogon(const FIX::SessionID& sessionID) override;
@@ -53,11 +49,20 @@ namespace bluestone {
     void onMessage(const FIX44::MarketDataSnapshotFullRefresh& message,
                    const FIX::SessionID& sessionID) override;
 
-    // --- Encapsulated QuickFIX State ---
-    std::unique_ptr<FIX::SessionSettings> settings_;
-    std::unique_ptr<FIX::FileStoreFactory> store_factory_;
-    std::unique_ptr<FIX::FileLogFactory> log_factory_;
-    std::unique_ptr<FIX::ThreadedSocketInitiator> initiator_;
+   public:
+    explicit LMAXConnector(const bluestone::ExchangeConfig& cfg);
+
+    ~LMAXConnector() override;
+    LMAXConnector(const LMAXConnector&);
+    LMAXConnector(LMAXConnector&&) noexcept;
+    LMAXConnector& operator=(const LMAXConnector&);
+    LMAXConnector& operator=(LMAXConnector&&) noexcept;
+
+    // --- IExchangeConnector Implementations ---
+    void connect() override;
+    void reconnect() override;
+    void disconnect() override;
+    void subscribe_market_data(int req_id, const std::string& symbol) override;
   };
 }  // namespace bluestone
    //

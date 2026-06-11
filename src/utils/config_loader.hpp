@@ -18,11 +18,11 @@ namespace bluestone {
     std::string target;
     std::string symbol;
     std::string event_type;
-    std::string api_key;
-    std::string private_key;
+    std::string public_key;
 
     std::string user_id;
     std::string password;
+    std::string exchange_cfg;
   };
 
   class ConfigLoader {

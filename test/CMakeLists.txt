@@ -1,38 +1,28 @@
 # test/CMakeLists.txt
 
-# 1. Find the required packages
-# Note: You may not need these if they are already exported globally 
-# in your 'cmake/dependencies.cmake' file.
+# 1. Initialize and find all required packages for the Beast examples
+# Conan's CMakeDeps generator will automatically expose targets like Boost::beast
 find_package(Boost REQUIRED COMPONENTS system thread)
+# 2. Find OpenSSL (This sets the OPENSSL_FOUND variable required by Beast subdirectories)
 find_package(OpenSSL REQUIRED)
+
+# 3. Find standard threading libraries
 find_package(Threads REQUIRED)
 
+if(NOT TARGET Boost::beast)
+    add_library(Boost::beast INTERFACE IMPORTED)
+    set_target_properties(Boost::beast PROPERTIES INTERFACE_LINK_LIBRARIES Boost::boost)
+endif()
 # ========================================================
-# Example 1: Boost Beast (e.g., an HTTP/WebSocket client)
+# Your Custom Tests (Optional)
 # ========================================================
-add_executable(beast_example
-	http_client_sync.cpp
-)
-
-# Link Boost, OpenSSL, and standard Threads
-target_link_libraries(beast_example PRIVATE 
-    Boost::boost
-    OpenSSL::SSL
-    OpenSSL::Crypto
-    Threads::Threads
-)
-
-# Optional: Set C++ standard just for safety, though it inherits C++23 from root
-set_target_properties(beast_example PROPERTIES CXX_STANDARD 23)
+# add_executable(my_custom_test custom_test.cpp)
+# target_link_libraries(my_custom_test PRIVATE Boost::boost OpenSSL::SSL OpenSSL::Crypto Threads::Threads)
+# set_target_properties(my_custom_test PROPERTIES CXX_STANDARD 23)
 
 # ========================================================
-# Example 2: Pure OpenSSL (e.g., encryption/decryption)
+# Ignite the Official Beast Examples Tree
 # ========================================================
-add_executable(openssl_example 
-	websocket.cpp
-)
-
-target_link_libraries(openssl_example PRIVATE 
-    OpenSSL::SSL
-    OpenSSL::Crypto
-)
+# Because OPENSSL_FOUND is now set to TRUE in this scope, the beast/advanced 
+# folder will successfully generate the server-flex and server-flex-awaitable targets.
+add_subdirectory(beast)

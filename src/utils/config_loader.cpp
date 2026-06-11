@@ -29,29 +29,17 @@ namespace bluestone {
   bluestone::ExchangeConfig bluestone::ConfigLoader::load(int argc,
                                                           char** argv) {
     std::cout << "[ConfigLoader] initialize ===\n";
-    ExchangeConfig exchange_cfg;
+    ExchangeConfig cfg_;
 
     absl::ParseCommandLine(argc, argv);
-    exchange_cfg.exchange = absl::GetFlag(FLAGS_exchange);
-    exchange_cfg.cfg_file = absl::GetFlag(FLAGS_config);
-    exchange_cfg.instance_id = absl::GetFlag(FLAGS_instance);
+    cfg_.exchange = absl::GetFlag(FLAGS_exchange);
+    cfg_.cfg_file = absl::GetFlag(FLAGS_config);
+    cfg_.instance_id = absl::GetFlag(FLAGS_instance);
 
-    if (exchange_cfg.exchange.empty()) {
-      std::cout << "[ConfigLoader]: CLI Exchange does not have val\n";
-    }
-
-    if (exchange_cfg.cfg_file.empty()) {
-      std::cout << "[ConfigLoader]: CLI config file does not have val\n";
-    }
-
-    if (exchange_cfg.instance_id == 0) {
-      std::cout << "[ConfigLoader]: CLI instance id cpu does not have val\n";
-    }
-
-    std::ifstream file(exchange_cfg.cfg_file);
+    // read file config from CLI
+    std::ifstream file(cfg_.cfg_file);
     if (!file.is_open()) {
-      std::cout << "[ERROR]: Can not open file: " << exchange_cfg.cfg_file
-                << '\n';
+      std::cout << "[ERROR]: Can not open file: " << cfg_.cfg_file << '\n';
       // Terminates quickly without causing race conditions in destructors
       std::quick_exit(EXIT_FAILURE);
     }
@@ -68,23 +56,23 @@ namespace bluestone {
           trim(std::string_view(line).substr(delimiter_pos + 1));
 
       if (key == "host") {
-        exchange_cfg.host = std::string(value);
+        cfg_.host = std::string(value);
       } else if (key == "port") {
-        exchange_cfg.port = std::string(value);
+        cfg_.port = std::string(value);
       } else if (key == "target") {
-        exchange_cfg.target = std::string(value);
+        cfg_.target = std::string(value);
       } else if (key == "symbol") {
-        exchange_cfg.symbol = std::string(value);
+        cfg_.symbol = std::string(value);
       } else if (key == "event_type") {
-        exchange_cfg.event_type = std::string(value);
-      } else if (key == "api_key") {
-        exchange_cfg.api_key = std::string(value);
-      } else if (key == "private_key") {
-        exchange_cfg.private_key = std::string(value);
+        cfg_.event_type = std::string(value);
+      } else if (key == "public_key") {
+        cfg_.public_key = std::string(value);
       } else if (key == "user_id") {
-        exchange_cfg.user_id = std::string(value);
+        cfg_.user_id = std::string(value);
       } else if (key == "password") {
-        exchange_cfg.password = std::string(value);
+        cfg_.password = std::string(value);
+      } else if (key == "exchange_cfg") {
+        cfg_.exchange_cfg = std::string(value);
       } else {
         std::cout
             << "=== [ERROR]: bluestone::ConfigLoader::load(.. , ..) wrong key="
@@ -94,7 +82,7 @@ namespace bluestone {
 
     file.close();
 
-    return exchange_cfg;
+    return cfg_;
   }
 
   std::string ConfigLoader::read_key_file(

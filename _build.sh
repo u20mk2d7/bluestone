@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e  # Exit immediately if a command fails
-git pull 
-git add . && git commit -m "update" && git push origin main
+#git pull 
+#git add . && git commit -m "update" && git push origin main
 
 #rm -rf build/
 #mkdir -p build/
@@ -12,7 +12,7 @@ cmake -S . -B build -G Ninja -DCMAKE_TOOLCHAIN_FILE=build/build/Release/generato
 
 cmake --build build -j 10
 
-./build/bluestone
+./build/bluestone --exchange lmax --config .env/app.cfg --instance 1
 
 #./build/test/beast_example
 #./build/test/openssl_example

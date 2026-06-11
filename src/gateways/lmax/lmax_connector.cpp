@@ -11,10 +11,10 @@
 #include <iostream>
 #include <string>
 
-#include "lmax_connector.hpp"
 namespace bluestone {
-  LMAXConnector::LMAXConnector(const std::string& config_file) {
-    settings_ = std::make_unique<FIX::SessionSettings>(config_file);
+  LMAXConnector::LMAXConnector(const bluestone::ExchangeConfig& cfg)
+      : cfg_(cfg) {
+    settings_ = std::make_unique<FIX::SessionSettings>(cfg.exchange_cfg);
     store_factory_ = std::make_unique<FIX::FileStoreFactory>(*settings_);
     log_factory_ = std::make_unique<FIX::FileLogFactory>(*settings_);
 
@@ -70,11 +70,11 @@ namespace bluestone {
     message.getHeader().getField(msgType);
 
     if (msgType == FIX::MsgType_Logon) {
-      message.setField(FIX::Username("DuyHaDemo"));
+      message.setField(FIX::Username(cfg_.user_id));
       // LMAX requires Tag 554 for Password.
       // Note: Make sure to check if you need to use FIX::Password instead of
       // RawData
-      message.setField(FIX::Password(readconfig from file.env / app.cfg));
+      message.setField(FIX::Password(cfg_.password));
       message.setField(FIX::ResetSeqNumFlag(true));
     }
   }
@@ -125,7 +125,7 @@ namespace bluestone {
     mdRequest.addGroup(symbolGroup);
 
     // 7. Send the request explicitly to your Market Data session
-    FIX::Session::sendToTarget(mdRequest, FIX::SenderCompID("DuyHaDemo"),
+    FIX::Session::sendToTarget(mdRequest, FIX::SenderCompID(cfg_.user_id),
                                FIX::TargetCompID("LMXBDM"));
 
     std::cout << "Sent Market Data Request for Instrument: " << instrumentId
