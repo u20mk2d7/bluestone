@@ -4,7 +4,7 @@
 #include <memory>
 #include <utility>
 
-#include "exchange/i_exchange_connector.hpp"
+#include "src/gateways/interface/i_exchange_connector.hpp"
 #include "trade_queue.hpp"
 
 namespace bluestone {
