@@ -36,7 +36,7 @@ endif()
 
 add_subdirectory(src/core)
 add_subdirectory(src/utils)
-add_subdirectory(src/gateways)
+add_subdirectory(src/gateway)
 add_subdirectory(test)
 
 # ==================== MAIN EXECUTABLE ====================
@@ -47,7 +47,7 @@ target_include_directories(bluestone PRIVATE ${CMAKE_SOURCE_DIR}/src)
 target_link_libraries(bluestone PRIVATE 
   bluestone_core
   bluestone_utils
-  bluestone_gateways
+  bluestone_gateway
   bluestone_pch
   quickfix::quickfix
 )
