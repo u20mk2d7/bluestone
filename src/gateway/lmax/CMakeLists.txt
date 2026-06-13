@@ -7,6 +7,9 @@ target_link_libraries(bluestone_gateway_lmax PUBLIC
     bluestone_gateway_interface
     quickfix::quickfix
     QuantLib::QuantLib
+    OpenSSL::SSL
+    OpenSSL::Crypto
+
 )
 
 # Notice we removed third_party/include!

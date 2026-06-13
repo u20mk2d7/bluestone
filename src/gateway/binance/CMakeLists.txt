@@ -8,6 +8,7 @@ target_link_libraries(bluestone_gateway_binance PUBLIC
     Boost::boost
     OpenSSL::SSL
     OpenSSL::Crypto
+    simdjson::simdjson
 )
 
 target_include_directories(bluestone_gateway_binance PUBLIC ${CMAKE_SOURCE_DIR}/src)
