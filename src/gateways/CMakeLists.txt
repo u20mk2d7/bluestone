@@ -1,34 +1,19 @@
 # src/gateways/CMakeLists.txt
 
-message(STATUS "Configuring exchange gateways...")
-
-add_library(bluestone_gateways STATIC
-    binance/binance_connector.cpp
-    lmax/lmax_connector.cpp
-)
-
+# 1. Add the new interface subdirectory
 add_subdirectory(interface)
 
-target_include_directories(bluestone_gateways PUBLIC 
-    ${CMAKE_CURRENT_SOURCE_DIR}
-    ${CMAKE_SOURCE_DIR}/src
+# 2. Add your specific exchange implementations
+add_subdirectory(binance)
+add_subdirectory(lmax)
+# add_subdirectory(ibkr) # If you have it
+
+# 3. Create the master gateways library
+add_library(bluestone_gateways STATIC "")
+
+# 4. Link the interface and implementations into the master library
+target_link_libraries(bluestone_gateways PUBLIC
+    bluestone_gateway_interface    # The new interface target
+    bluestone_binance
+    bluestone_lmax
 )
-
-target_link_libraries(bluestone_gateways PUBLIC 
-    bluestone_core
-    bluestone_utils
-    bluestone_pch
-    
-    quickfix::quickfix
-    Boost::boost
-    simdjson::simdjson
-    OpenSSL::SSL
-    OpenSSL::Crypto
-    Boost::program_options
-    #intel_dfp # intel decimal floating point math library
-    abseil::abseil
-)
-
-set_target_properties(bluestone_gateways PROPERTIES UNITY_BUILD ON)
-
-message(STATUS "Gateways library built successfully (WebSocket + FIX).")

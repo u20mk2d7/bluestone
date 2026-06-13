@@ -1,7 +1,8 @@
 # src/gateways/interface/CMakeLists.txt
 
-add_library(bluestone_gateways_interface INTERFACE)
+add_library(bluestone_gateway_interface INTERFACE)
 
-target_include_directories(bluestone_gateways_interface INTERFACE 
-    ${CMAKE_CURRENT_SOURCE_DIR}
+# Expose the include path to everything that links to this interface
+target_include_directories(bluestone_gateway_interface INTERFACE 
+    ${CMAKE_SOURCE_DIR}/src
 )
