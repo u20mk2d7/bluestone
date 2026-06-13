@@ -5,7 +5,7 @@ message(STATUS "Configuring src/ directory...")
 # Add submodules
 add_subdirectory(utils)
 add_subdirectory(core)
-add_subdirectory(gateways)
+add_subdirectory(gateway)
 
 # Main executable
 add_executable(bluestone main.cpp)
