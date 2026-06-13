@@ -108,7 +108,7 @@ bluestone/
     │   ├── risk/                  # O(1) Pre-trade limit checks & Kill switches
     │   ├── marketdata/            # Contiguous memory Order Book implementation
     │   └── oms/                   # Order State Machines
-    ├── gateways/                  # THE DIRTY LAYER (Network I/O, Third-party libs)
+    ├── gateway/                   # THE DIRTY LAYER (Network I/O, Third-party libs)
     │   ├── binance/               # Boost.Beast WebSocket implementations
     │   ├── lmax/                  # QuickFIX Engine instances
     │   └── interface/             # Abstract base classes (IExchangeConnector)
