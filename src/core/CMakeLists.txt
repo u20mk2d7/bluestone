@@ -10,10 +10,8 @@ add_library(bluestone_core STATIC
 # Add subdirectories
 add_subdirectory(fix)
 add_subdirectory(marketdata)
-add_subdirectory(execution)
 add_subdirectory(risk)
 add_subdirectory(strategy)
-add_subdirectory(tws)
 add_subdirectory(utils)
 
 target_include_directories(bluestone_core PUBLIC 
