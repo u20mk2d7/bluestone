@@ -1,11 +1,10 @@
-# 🏛️ Project Bluestone: High-Frequency Trading Architecture Blueprint
+# Project Bluestone: High-Frequency Trading Architecture Blueprint
 
-**Objective:** To engineer a low-latency, institutional-grade Quantitative Trading Infrastructure bridging Traditional Finance (TradFi via IBKR, FIX)
-Websocket Cryptocurrency markets (Binance, OKX, Coinbase). The system is built on modern C++23, strictly adhering to zero-allocation hot paths, lock-free concurrency, and hardware-level thread affinity.
+**Objective:** To engineer a sub-microsecond, institutional-grade Quantitative Trading Infrastructure capable of cross-venue arbitrage. Project Bluestone bridges Traditional Finance (TradFi via LMAX/FIX) and Cryptocurrency markets (Binance via WebSockets/REST). The system is built on modern C++23, strictly adhering to zero-allocation hot paths, lock-free concurrency, and hardware-level thread affinity.
 
 ---
 
-## ⚠️ ENGINEERING DIRECTIVES: STRICT CODING STANDARDS
+## ENGINEERING DIRECTIVES: STRICT CODING STANDARDS
 All engineers (and AI Assistants) contributing to Project Bluestone must strictly adhere to the following constraints:
 * **Language:** Pure C++23 or latest standard (Standard Template Library only in the core).
 * **Style & Linting:** Strict adherence to LLVM coding standards, the Google C++ Style Guide, and C++ Core Guidelines.
@@ -14,7 +13,7 @@ All engineers (and AI Assistants) contributing to Project Bluestone must strictl
 
 ---
 
-## ⏱️ The Latency Horizons (Execution Tiers)
+## The Latency Horizons (Execution Tiers)
 
 ### Tier 1: The Hot Path (1 - 100 Nanoseconds)
 * **Purpose:** The Core Trading Engine. This is where market data is parsed, the Order Book is maintained, and "Buy/Sell" decisions are executed.
@@ -36,7 +35,7 @@ All engineers (and AI Assistants) contributing to Project Bluestone must strictl
 
 ---
 
-## 🌍 Infrastructure & Dependencies
+## Infrastructure & Dependencies
 
 Project Bluestone utilizes a hermetically sealed Conan v2 build system to prevent ABI mismatches and ensure portability.
 
@@ -48,41 +47,72 @@ Project Bluestone utilizes a hermetically sealed Conan v2 build system to preven
 
 ---
 
+## SYSTEM TOPOLOGY: THE HYBRID BRIDGE
+Project Bluestone normalizes fragmented market structures into a single, unified algorithmic pipeline.
+```
+┌────────────────────────┐             ┌────────────────────────┐
+│   BINANCE (Crypto)     │             │    LMAX (TradFi)       │
+│ wss://stream.binance   │             │ TargetCompID: LMXBDM   │
+└───────────┬────────────┘             └───────────┬────────────┘
+            │ JSON / WebSockets                    │ FIX Protocol (35=W)
+            ▼                                      ▼
+┌────────────────────────┐             ┌────────────────────────┐
+│  Binance Gateway       │             │  QuickFIX Gateway      │
+│  (Boost.Beast / SSL)   │             │  (Session Management)  │
+└───────────┬────────────┘             └───────────┬────────────┘
+            │ simdjson Parsing                     │ FIX Tag Extraction
+            ▼                                      ▼
+┌───────────────────────────────────────────────────────────────┐
+│                    SHARED MEMORY BUS                          │
+│               Lock-Free SPSC Ring Buffers                     │
+└──────────────────────────────┬────────────────────────────────┘
+                               │ NormalizedTicks
+                               ▼
+┌───────────────────────────────────────────────────────────────┐
+│                    CORE HOT PATH (C++23)                      │
+│                                                               │
+│  ┌────────────────┐  ┌────────────────┐  ┌─────────────────┐  │
+│  │ Book Builder   ├──► Strategy Engine├──► Risk Engine     │  │
+│  └────────────────┘  └────────────────┘  └───────┬─────────┘  │
+│                                                  │            │
+│  ┌────────────────┐  ┌────────────────┐          │            │
+│  │ Fast FIX Maker │◄─┤ Order Manager  │◄─────────┘            │
+│  │ (Zero Alloc)   │  │ (OMS)          │                       │
+│  └───────┬────────┘  └────────────────┘                       │
+└──────────│────────────────────────────────────────────────────┘
+           │ Raw char[] byte arrays
+           ▼
+┌────────────────────────┐
+│  Execution Gateway     │
+│  (QuickFIX Network I/O)│
+└───────────┬────────────┘
+            │
+            ▼
+    Exchange Matching
+```
+
 ## 📂 Monorepo Directory Structure (The Unified Tree)
 
 ```text
 bluestone/
-├── CMakeLists.txt                 # Master Build File (LTO, march=native, -O3)
-├── .env/
-│   └── *.json                     # Instance configurations loaded at startup
-├── build/                         # Release build output
+├── CMakeLists.txt                 # Master Build (LTO, -march=native, -O3, -fno-exceptions for core)
+├── .env/                          # Configs loaded strictly at boot
+├── build/                         # Release binaries
 └── src/
-    ├── CMakeLists.txt
-    ├── pch.hpp                    # Precompiled headers for fast compilation
-    ├── common/
-    │   ├── types.hpp              # Flat structs (No std::string in hot path)
-    │   └── constants.hpp
-    ├── utils/                     # System Utilities (Third-party allowed)
-    │   ├── cfg_util.hpp           # JSON config parsers
-    │   ├── cli_util.hpp           # Abseil command line parsers
-    │   └── event_loop_worker.hpp  # Thread pinning & Asio contexts
-    ├── core/                      # The Brain (Pure C++ / STL Only)
-    │   ├── utils/                 # HFT Utilities (lockfree queues, memory arenas, timing)
-    │   ├── exchange/              # Abstract pure virtual interfaces (i_exchange_connector)
-    │   ├── fix/                   # Optimized QuickFIX wrappers & Core FIX logic
-    │   ├── tws/                   # TWSAPI low-latency wrapper
-    │   ├── strategy/              # Lock-free strategy modules
-    │   ├── risk/                  # Ultra-fast pre-check risk engine
-    │   ├── marketdata/            # Lock-free order book & tick processor
-    │   ├── execution/             # Smart order routing
-    │   └── trade_engine.hpp       # Core Engine definition
-    ├── gateways/                  # Exchange-Specific Adapters
-    │   ├── binance/               # WS & FIX implementations
-    │   ├── coinbase/              # FIX implementation
-    │   ├── okx/                   # WS implementation
-    │   └── interactivebrokers/    # TWSAPI implementation
-    └─── main.cpp               # Dynamic executable entry point
-
+    ├── common/                    # Flat structs (POD types, zero std::string)
+    ├── utils/                     # System-level utils (Config, CLI, Thread affinity)
+    ├── core/                      # THE PURE LAYER (C++23 Standard Library ONLY)
+    │   ├── utils/                 # SPSC queues, memory arenas, TSC timers
+    │   ├── fix/                   # Zero-allocation FIX encoders/decoders (Raw C++)
+    │   ├── strategy/              # Lock-free alpha engines
+    │   ├── risk/                  # O(1) Pre-trade limit checks & Kill switches
+    │   ├── marketdata/            # Contiguous memory Order Book implementation
+    │   └── oms/                   # Order State Machines
+    ├── gateways/                  # THE DIRTY LAYER (Network I/O, Third-party libs)
+    │   ├── binance/               # Boost.Beast WebSocket implementations
+    │   ├── lmax/                  # QuickFIX Engine instances
+    │   └── interface/             # Abstract base classes (IExchangeConnector)
+    └── main.cpp                   # Wiring, Dependency Injection, and Ignition
 ```
 
 ---
@@ -111,17 +141,66 @@ bluestone/
 
 
 5. **Hardware & OS Optimizations (Production)**
-* Deploy on AlmaLinux / Debian Server with a low-latency kernel.
+* Deploy on AlmaLinux Server with a low-latency kernel.
 * Disable CPU Turbo Boost to prevent frequency scaling latency (jitter). Set CPU governor to `performance`.
 * Enable Huge Pages to prevent TLB cache misses.
 
+4. Hardware/Software Symbiosis (Thread Topology)
+We treat the Linux scheduler as a hindrance. The execution topology relies on strict core isolation using OS-level affinity (taskset, sched_setaffinity).
 
+CPU 0 -> OS / Kernel Tasks / Interrupts
 
+CPU 1 -> Binance Feed Handler (WebSockets ingress)
+
+CPU 2 -> LMAX Feed Handler (QuickFIX Market Data ingress)
+
+CPU 3 -> Order Book Builder (Normalizer)
+
+CPU 4 -> Strategy Engine (Alpha Generation & Pricing)
+
+CPU 5 -> Risk Engine & Order Management System (OMS)
+
+CPU 6 -> Execution Gateway (QuickFIX Outbound egress)
+
+CPU 7 -> Asynchronous Logger (spdlog) & PostgreSQL Writer
+
+6. **LATENCY BUDGET & DATA FLOW**
+```
+Inbound Market Data Path (Tick to Signal)
+
+Exchange NIC           -> Gateway        0.8 µs
+Gateway Normalization  -> Ring Buffer    1.0 µs
+Book Builder Update    -> Strategy       1.0 µs
+-----------------------------------------------
+Total Target                             < 3.0 µs
+```
+
+```
+Outbound Order Path (Signal to Wire)
+Strategy Signal        -> Risk Engine    0.5 µs
+Risk Engine (Margin)   -> OMS            0.8 µs
+OMS Routing            -> Core FIX Maker 0.5 µs
+Core FIX (byte packing)-> Socket Flush   1.2 µs
+-----------------------------------------------
+Total Target                             < 3.0 µs
+```
 ---
 
 ## 🚀 Execution Strategy: Horizontal Scaling
+## 6. Production Infrastructure Mandates
+```
+To achieve sub-microsecond determinism, software alone is insufficient. The production environment must be rigorously tuned.
+
+Kernel Bypass Networking: Utilize DPDK or Solarflare OpenOnload. The application must read packets directly from the NIC ring buffers, bypassing the Linux TCP/IP stack.
+
+CPU Governor & C-States: Disable CPU Turbo Boost to eliminate frequency scaling latency (jitter). Enforce performance governor. Disable deep C-states in BIOS.
+
+Memory TLB: Enable Linux Huge Pages (1GB size) to drastically reduce Translation Lookaside Buffer (TLB) misses.
+
+Execution Strategy (Horizontal Scaling): Avoid vertical multi-threading within a single strategy. Launch independent, parameter-driven binary instances pinned to discrete CPU cores via JSON configs.
 
 Launch multiple independent instances of the compiled binary, locked to separate CPU cores, driven dynamically by JSON configurations.
+```
 
 ```bash
 # Terminal 1: Run bluestone pinned to Physical Core 4 and bluestone has instance 1

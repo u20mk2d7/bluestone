@@ -20,7 +20,7 @@ find_package(benchmark REQUIRED)
 
 find_package(QuantLib QUIET)
 if(QuantLib_FOUND)
-    message(STATUS "=== QuantLib found ===")
+  message(STATUS "=== QuantLib found ===")
 endif()
 
 
