@@ -3,8 +3,8 @@
 #include <memory>
 #include <thread>
 
-#include "gateways/interface/i_exchange_connector.hpp"
-#include "gateways/lmax/lmax_connector.hpp"
+#include "gateway/interface/i_exchange_connector.hpp"
+#include "gateway/lmax/lmax_connector.hpp"
 #include "utils/config_loader.hpp"
 
 int main(int argc, char** argv) {
