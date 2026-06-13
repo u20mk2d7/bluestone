@@ -16,9 +16,8 @@ target_include_directories(bluestone PRIVATE
 )
 
 target_link_libraries(bluestone PRIVATE 
-    bluestone_core_exchange
     bluestone_utils
-    bluestone_gateways
+    bluestone_gateway
     bluestone_pch
     quickfix::quickfix
     Boost::boost
