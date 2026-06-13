@@ -6,8 +6,9 @@ add_subdirectory(lmax)
 
 add_library(bluestone_gateway INTERFACE)
 
-target_link_libraries(bluestone_gateway PUBLIC
+target_link_libraries(bluestone_gateway INTERFACE
     bluestone_gateway_interface
     bluestone_gateway_binance
     bluestone_gateway_lmax
 )
+
