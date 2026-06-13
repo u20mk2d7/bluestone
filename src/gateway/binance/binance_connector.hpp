@@ -9,7 +9,7 @@
 #include <string>
 
 #include "core/trade_queue.hpp"
-#include "gateways/interface/i_exchange_connector.hpp"
+#include "gateway/interface/i_exchange_connector.hpp"
 #include "utils/config_loader.hpp"
 
 namespace bluestone {
