@@ -7,10 +7,13 @@ add_library(bluestone_gateways STATIC
     lmax/lmax_connector.cpp
 )
 
+add_subdirectory(interface)
+
 target_include_directories(bluestone_gateways PUBLIC 
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_SOURCE_DIR}/src
 )
+
 target_link_libraries(bluestone_gateways PUBLIC 
     bluestone_core
     bluestone_utils

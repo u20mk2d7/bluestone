@@ -14,7 +14,7 @@
 #include <memory>
 #include <string>
 
-#include "core/exchange/i_exchange_connector.hpp"
+#include "gateways/interface/i_exchange_connector.hpp"
 #include "utils/config_loader.hpp"
 
 namespace bluestone {

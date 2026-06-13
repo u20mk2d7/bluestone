@@ -8,7 +8,6 @@ add_library(bluestone_core STATIC
 )
 
 # Add subdirectories
-add_subdirectory(exchange)
 add_subdirectory(fix)
 add_subdirectory(marketdata)
 add_subdirectory(execution)
