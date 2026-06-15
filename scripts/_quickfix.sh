@@ -6,9 +6,18 @@ rm -rf build/
 mkdir -p build/
 
 echo "Configuring QuickFIX with CMake..."
+OPENSSL_PATH=""
+if command -v brew &> /dev/null; then
+    OPENSSL_PATH=$(brew --prefix openssl)
+elif command -v openssl &> /dev/null; then
+    # Linux: If openssl is in path, assume standard system location (/usr)
+    # CMake usually finds it automatically in /usr/lib and /usr/include, or ~/conan/.../openssl
+    OPENSSL_PATH=$(which openssl)
+    echo "OpenSSL detected at: $OPENSSL_PATH. Letting CMake find it automatically."
+else
+    echo "Warning: OpenSSL not found via brew or system path."
+fi
 
-# Ask Homebrew for the base OpenSSL directory (drops the hardcoded @3)
-OPENSSL_PATH=$(brew --prefix openssl)
 
 cmake -S . -B build -G Ninja \
   -DCMAKE_CXX_COMPILER=clang++ \
@@ -18,7 +27,7 @@ cmake -S . -B build -G Ninja \
   -DOPENSSL_ROOT_DIR="$OPENSSL_PATH" \
   -DQUICKFIX_EXAMPLES=OFF \
   -DQUICKFIX_TESTS=OFF \
-  -DCMAKE_INSTALL_PREFIX="$HOME/repos/third_party/libs/quickfix/install"
+  -DCMAKE_INSTALL_PREFIX="$HOME/repos/bluestone/third_party"
 
 # Determine available cores dynamically
 CORES=$(($(sysctl -n hw.ncpu 2>/dev/null || nproc) - 2))
