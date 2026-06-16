@@ -15,6 +15,7 @@ DataGatewayEngine::DataGatewayEngine(
       queue_(std::move(queue)),
       running_(false) {}
 
+<<<<<<< Updated upstream
 void DataGatewayEngine::run() {
   std::cout << "[DataGatewayEngine]: Stopping Exchange Connection...\n";
   exchange_->connect();
@@ -36,6 +37,30 @@ void DataGatewayEngine::run() {
       // QUEUE IS EMPTY. DO NOT SLEEP.
       // We gently yield the CPU cache line to let the Gateway thread write to
       // it.
+=======
+  void DataGatewayEngine::run() {
+    std::cout << "[DataGatewayEngine]: Running Exchange Connection...\n";
+    exchange_->connect();
+    std::cout << "[DataGatewayEngine]: Engaging HFT Nanosecond Loop...\n";
+    running_.store(true, std::memory_order_release);
+
+    while (running_.load(std::memory_order_acquire)) {
+      bluestone::NormalizeTick tick;
+      // pop() is lock-free. It returns instantly without asking the OS for a
+      // mutex lock.
+      if (queue_->pop(tick)) {
+        // This code executes within single-digit nanoseconds of the Gateway
+        // pushing it.
+        //
+        std::cout << "[TICK] InstID: " << tick.instrument_id
+                  << " | Bid: " << tick.bid_price << " (" << tick.bid_qty << ")"
+                  << " | Ask: " << tick.ask_price << " (" << tick.ask_qty
+                  << ")\n";
+      } else {
+        // QUEUE IS EMPTY. DO NOT SLEEP.
+        // We gently yield the CPU cache line to let the Gateway thread write to
+        // it.
+>>>>>>> Stashed changes
 #if defined(__x86_64__) || defined(_M_X64)
       _mm_pause();  // Intel/AMD hardware pause
 #elif defined(__aarch64__)
