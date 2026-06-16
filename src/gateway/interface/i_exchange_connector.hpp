@@ -9,20 +9,22 @@
 #include <utility>
 
 namespace bluestone {
-  class IExchangeConnector {
-   public:
-    virtual ~IExchangeConnector() = default;
-    IExchangeConnector() = default;
-    IExchangeConnector(const IExchangeConnector&) = delete;
-    IExchangeConnector& operator=(IExchangeConnector) = delete;
-    IExchangeConnector(IExchangeConnector&&) = delete;
-    IExchangeConnector& operator=(IExchangeConnector&&) = delete;
+class IExchangeConnector {
+ public:
+  virtual ~IExchangeConnector() = default;
+  IExchangeConnector() = default;
+  IExchangeConnector(const IExchangeConnector&) = delete;
+  IExchangeConnector& operator=(const IExchangeConnector&) = delete;
+  IExchangeConnector(IExchangeConnector&&) = delete;
+  IExchangeConnector& operator=(IExchangeConnector&&) = delete;
 
-    virtual void connect() = 0;
-    virtual void reconnect() = 0;
-    virtual void disconnect() = 0;
-    virtual void subscribe_market_data(int req_id,
-                                       const std::string& symbol) = 0;
-  };
+  virtual void connect() = 0;
+  virtual void reconnect() = 0;
+  virtual void disconnect() = 0;
+  virtual void subscribe_market_data(int req_id, const std::string& symbol) = 0;
+
+};  // class IExchangeConnector
+
 }  // namespace bluestone
+
 #endif  // IEXCHANGECONNECTOR_HPP

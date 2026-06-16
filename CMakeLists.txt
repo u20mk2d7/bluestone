@@ -33,11 +33,11 @@ endif()
 # ==================== SUBDIRECTORIES ====================
 #add_subdirectory(third_party/twsapi)
 #add_subdirectory(third_party/intel_dfp)
-
 add_subdirectory(src/core)
 add_subdirectory(src/utils)
 add_subdirectory(src/gateway)
-add_subdirectory(test)
+add_subdirectory(tests)
+#add_subdirectory(learning)
 
 # ==================== MAIN EXECUTABLE ====================
 add_executable(bluestone src/main.cpp)
