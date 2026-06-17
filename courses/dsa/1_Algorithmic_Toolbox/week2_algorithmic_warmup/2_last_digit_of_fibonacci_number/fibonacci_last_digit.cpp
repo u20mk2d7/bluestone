@@ -4,17 +4,18 @@
 #include <vector>
 
 int get_fib_last_digit_navie(int n) {
-  if (n < 2) {return n;}
+  if (n < 2) {
+    return n;
+  }
 
-std::vector<int> F(n+1);
-F[0] = 0;
-F[1] = 1;
-for (int i = 2; i <= n; ++i) {
- F[i] = (F[i - 1] + F[i - 2]) %10;
-}
+  std::vector<int> F(n + 1);
+  F[0] = 0;
+  F[1] = 1;
+  for (int i = 2; i <= n; ++i) {
+    F[i] = (F[i - 1] + F[i - 2]) % 10;
+  }
   return F[n];
 }
-
 
 // https://en.wikipedia.org/wiki/Pisano_period
 int get_fib_last_digit_pisano_period(int n) {
@@ -24,7 +25,7 @@ int get_fib_last_digit_pisano_period(int n) {
   }
 
   // Apply the Pisano Period: F(n) % 10 is the same as F(n % 60) % 10.
-  // This reduces 'n' to a smaller equivalent index within the repeating cycle.
+  // This reduces 'n' to a smaller equivalent index within the repeating cycle
   n = n % 60;
 
   // Handle the case where n % 60 results in 0 (e.g., for F_60, F_120, etc.).
@@ -58,7 +59,7 @@ void stress_test() {
 }
 
 int main() {
-   //stress_test();
+  // stress_test();
 
   int n;
   std::cin >> n;
