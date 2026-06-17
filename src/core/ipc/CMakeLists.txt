@@ -5,11 +5,6 @@ find_package(Boost REQUIRED COMPONENTS system thread)
 find_package(OpenSSL REQUIRED)
 find_package(Threads REQUIRED)
 
-if(NOT TARGET Boost::beast)
-    add_library(Boost::beast INTERFACE IMPORTED)
-    set_target_properties(Boost::beast PROPERTIES INTERFACE_LINK_LIBRARIES Boost::boost)
-endif()
-
 # 2. CRITICAL: Create the executable FIRST
 add_executable(bluestone_core_ipc
 )
@@ -24,4 +19,6 @@ target_link_libraries(bluestone_core_ipc
     #ROOT::Core ROOT::Hist
 )
 
-
+target_include_directories(bluestone_core_pic PUBLIC 
+    ${CMAKE_SOURCE_DIR}/src
+)
