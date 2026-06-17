@@ -1,11 +1,18 @@
 namespace bluestone {
-  struct NormalizeTick {
-    uint64_t timestamp;
-    uint64_t instrument_id;
-    double bid_price;
-    double ask_price;
-    uint32_t bid_qty;
-    uint32_t ask_qty;
-  };
+struct NormalizeTick {
+  uint64_t timestamp;      // 8 bytes
+  uint64_t instrument_id;  // 8 bytes
+  double bid_price;        // 8 bytes
+  double ask_price;        // 8 bytes
+  uint32_t bid_qty;        // 4 bytes
+  uint32_t ask_qty;        // 4 bytes
+};
+
+// 2. The Compile-Time Safety Guardrail
+// This guarantees that NormalizeTick never accidentally slows down your
+// lock-free queue.
+static_assert(std::is_trivially_copyable<NormalizeTick>::value,
+              "NormalizeTick must be trivially copyable for lock-free memory "
+              "operations!");
 
 }  // namespace bluestone

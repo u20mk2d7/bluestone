@@ -18,7 +18,7 @@ target_link_libraries(bluestone_utils PUBLIC
     simdjson::simdjson
     absl::flags  
     absl::flags_parse
-    
+
 )
 
 message(STATUS "Utils library (bluestone_utils) built successfully.")

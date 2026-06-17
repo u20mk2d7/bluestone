@@ -19,9 +19,8 @@ find_package(GTest REQUIRED)
 find_package(benchmark REQUIRED)
 
 find_package(QuantLib QUIET)
-if(QuantLib_FOUND)
-  message(STATUS "=== QuantLib found ===")
-endif()
 
+#find_package(ROOT REQUIRED COMPONENTS RIO Net Hist) # https://root.cern/
+#include(${ROOT_USE_FILE}) # no need
 
 message(STATUS "All libraries loaded successfully.")

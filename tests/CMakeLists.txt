@@ -11,7 +11,9 @@ if(NOT TARGET Boost::beast)
 endif()
 
 # 2. CRITICAL: Create the executable FIRST
-add_executable(bluestone_tests http_sync_client.cpp)
+add_executable(bluestone_tests
+    http_sync_client.cpp
+)
 
 # 3. Link the necessary libraries (Removed GTest because you have your own main)
 target_link_libraries(bluestone_tests 
@@ -20,4 +22,5 @@ target_link_libraries(bluestone_tests
     Threads::Threads
     OpenSSL::SSL
     OpenSSL::Crypto
+    #ROOT::Core ROOT::Hist
 )
