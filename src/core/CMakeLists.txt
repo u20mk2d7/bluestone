@@ -13,6 +13,7 @@ add_subdirectory(marketdata)
 add_subdirectory(risk)
 add_subdirectory(strategy)
 add_subdirectory(utils)
+add_subdirectory(ipc) # Inter-Process Communication
 
 target_include_directories(bluestone_core PUBLIC 
     ${CMAKE_CURRENT_SOURCE_DIR}
