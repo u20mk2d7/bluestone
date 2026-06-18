@@ -13,7 +13,7 @@ add_executable(bluestone main.cpp)
 
 target_include_directories(bluestone PRIVATE 
     ${CMAKE_CURRENT_SOURCE_DIR}
-    ${CMAKE_SOURCE_DIR}/src
+    #${CMAKE_SOURCE_DIR}/src
 )
 
 target_link_libraries(bluestone PRIVATE 

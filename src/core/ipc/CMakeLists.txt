@@ -1,24 +1,19 @@
-# Inter-Process Communication
 # src/core/ipc/CMakeLists.txt
 
-find_package(Boost REQUIRED COMPONENTS system thread)
-find_package(OpenSSL REQUIRED)
-find_package(Threads REQUIRED)
+# Inter-Process Communication
+add_library(bluestone_core_ipc INTERFACE)
 
-# 2. CRITICAL: Create the executable FIRST
-add_executable(bluestone_core_ipc
-)
+find_package(Boost REQUIRED)
 
-# 3. Link the necessary libraries (Removed GTest because you have your own main)
+# Link the necessary libraries 
 target_link_libraries(bluestone_core_ipc
-    PRIVATE 
+    INTERFACE
     Boost::boost
-    Threads::Threads
-    OpenSSL::SSL
-    OpenSSL::Crypto
     #ROOT::Core ROOT::Hist
 )
 
-target_include_directories(bluestone_core_pic PUBLIC 
-    ${CMAKE_SOURCE_DIR}/src
+# FIXED: Changed PUBLIC to INTERFACE and removed the trailing keyword
+target_include_directories(bluestone_core_ipc 
+    INTERFACE 
+    ${CMAKE_CURRENT_SOURCE_DIR}
 )

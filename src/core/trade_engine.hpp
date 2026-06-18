@@ -5,8 +5,8 @@
 #include <atomic>
 #include <memory>
 
+#include "core/ipc/trade_queue.hpp"
 #include "gateway/interface/i_exchange_connector.hpp"
-#include "trade_queue.hpp"
 
 namespace bluestone {
   class DataGatewayEngine {

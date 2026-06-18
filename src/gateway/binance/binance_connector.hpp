@@ -8,7 +8,7 @@
 #include <memory>
 #include <string>
 
-#include "core/trade_queue.hpp"
+#include "core/ipc/trade_queue.hpp"
 #include "gateway/interface/i_exchange_connector.hpp"
 #include "utils/config_loader.hpp"
 
