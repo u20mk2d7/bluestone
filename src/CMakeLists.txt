@@ -13,16 +13,19 @@ add_executable(bluestone main.cpp)
 
 target_include_directories(bluestone PRIVATE 
     ${CMAKE_CURRENT_SOURCE_DIR}
-    #${CMAKE_SOURCE_DIR}/src
+    ${CMAKE_SOURCE_DIR}/src
 )
 
-target_link_libraries(bluestone PRIVATE 
+target_link_libraries(bluestone PRIVATE
+    bluestone_core
     bluestone_utils
     bluestone_gateway
     bluestone_pch
     quickfix::quickfix
     Boost::boost
     abseil::abseil
+    #ROOT::Core ROOT::Hist
+
 )
 
 # Enable Unity Build for faster compilation

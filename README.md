@@ -91,7 +91,7 @@ Project Bluestone normalizes fragmented market structures into a single, unified
     Exchange Matching
 ```
 
-## 📂 Monorepo Directory Structure (The Unified Tree)
+## Monorepo Directory Structure (The Unified Tree)
 
 ```text
 bluestone/
@@ -102,6 +102,7 @@ bluestone/
     ├── common/                    # Flat structs (POD types, zero std::string)
     ├── utils/                     # System-level utils (Config, CLI, Thread affinity)
     ├── core/                      # THE PURE LAYER (C++23 Standard Library ONLY)
+    |   |-- ipc/                   # Inter-Process Communication
     │   ├── utils/                 # SPSC queues, memory arenas, TSC timers
     │   ├── fix/                   # Zero-allocation FIX encoders/decoders (Raw C++)
     │   ├── strategy/              # Lock-free alpha engines
@@ -117,7 +118,7 @@ bluestone/
 
 ---
 
-## ⚡ Critical Techniques for Sub-Microsecond Performance
+## Critical Techniques for Sub-Microsecond Performance
 
 1. **Minimize Allocations & Copying**
 * Use custom memory pool allocators. Zero `new` or `malloc` calls after initialization.

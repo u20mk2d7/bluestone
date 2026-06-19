@@ -19,7 +19,11 @@ namespace bluestone {
       std::shared_ptr<bluestone::TradeQueue> queue)
       : exchange_(std::move(exchange)),
         queue_(std::move(queue)),
-        running_(false) {}
+        running_(false) {
+          std::cout << "[DataGatewayEngine] Constructure....\n";
+        }
+
+        //
   void DataGatewayEngine::run() {
     std::cout << "[DataGatewayEngine]: Running Exchange Connection...\n";
     exchange_->connect();
@@ -45,8 +49,9 @@ namespace bluestone {
 #if defined(__x86_64__) || defined(_M_X64)
         _mm_pause();  // Intel/AMD hardware pause
 #elif defined(__aarch64__)
+  // Apple Silicon / ARM hardware yield
         asm volatile("yield" ::
-                         : "memory");  // Apple Silicon / ARM hardware yield
+                         : "memory");
 #endif
       }
     }

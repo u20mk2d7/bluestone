@@ -21,8 +21,8 @@ Here is the C++23 institutional header for your Order Book.
 #include <vector>
 #include "absl/container/flat_hash_map.h"
 
-namespace Bluestone {
-namespace MarketData {
+namespace bluestone {
+namespace marketdata {
 
 // 1. Enums strictly sized for cache-line packing
 enum class Side : uint8_t { Buy = 0, Sell = 1 };

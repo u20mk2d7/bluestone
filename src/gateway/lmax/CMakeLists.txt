@@ -9,11 +9,8 @@ target_link_libraries(bluestone_gateway_lmax PUBLIC
     QuantLib::QuantLib
     OpenSSL::SSL
     OpenSSL::Crypto
-
 )
 
-# Notice we removed third_party/include!
-# quickfix::quickfix automatically provides its own headers now.
 target_include_directories(bluestone_gateway_lmax PUBLIC 
-    ${CMAKE_SOURCE_DIR}/src
+    ${CMAKE_CURRENT_SOURCE_DIR}
 )

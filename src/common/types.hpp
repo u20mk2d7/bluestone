@@ -1,5 +1,9 @@
+
+
 namespace bluestone {
 struct NormalizeTick {
+  uint64_t gateway_recv_tsc;  // 8 bytes Hardware Timestamp for latency tracking
+
   uint64_t timestamp;      // 8 bytes
   uint64_t instrument_id;  // 8 bytes
   double bid_price;        // 8 bytes
@@ -12,7 +16,6 @@ struct NormalizeTick {
 // This guarantees that NormalizeTick never accidentally slows down your
 // lock-free queue.
 static_assert(std::is_trivially_copyable<NormalizeTick>::value,
-              "NormalizeTick must be trivially copyable for lock-free memory "
-              "operations!");
+              "NormalizeTick must be trivially copyable!");
 
 }  // namespace bluestone

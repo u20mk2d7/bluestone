@@ -1,16 +1,15 @@
-# ==============================================================================
-# src/utils/CMakeLists.txt (The Infrastructure)
-# ==============================================================================
+# src/core/utils/CMakeLists.txt # SPSC queues, memory arenas, TSC timers
 
 add_library(bluestone_core_utils INTERFACE)
 
-# Tell anyone who links utils to look in the main src/ directory for includes
-target_include_directories(bluestone_core_utils INTERFACE ${CMAKE_SOURCE_DIR}/src)
+target_include_directories(bluestone_core_utils
+    INTERFACE
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_SOURCE_DIR}/src
+)
 
-# Threading is a system-level requirement, so we attach it to the utils backpack
 find_package(Threads REQUIRED)
 target_link_libraries(bluestone_core_utils INTERFACE 
     Threads::Threads 
-    Boost::boost
 )
 
