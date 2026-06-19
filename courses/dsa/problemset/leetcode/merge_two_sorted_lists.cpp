@@ -14,15 +14,13 @@
  */
 
 class Solution {
-public:
-  ListNode *mergeTwoLists_ver01(ListNode *list1, ListNode *list2) {
-    if (list1 == nullptr)
-      return list2;
-    if (list2 == nullptr)
-      return list1;
+ public:
+  ListNode* mergeTwoLists_ver01(ListNode* list1, ListNode* list2) {
+    if (list1 == nullptr) return list2;
+    if (list2 == nullptr) return list1;
 
     ListNode dummy(0);
-    ListNode *current = dummy;
+    ListNode* current = dummy;
 
     while (list1 && list2) {
       if (list1->val <= list2->val) {
@@ -47,11 +45,9 @@ public:
     return dummy->next;
   }
 
-  ListNode *mergeTwoLists_ver02(ListNode *list1, ListNode *list2) {
-    if (list1 == nullptr)
-      return list2;
-    if (list2 == nullptr)
-      return list1;
+  ListNode* mergeTwoLists_ver02(ListNode* list1, ListNode* list2) {
+    if (list1 == nullptr) return list2;
+    if (list2 == nullptr) return list1;
 
     if (list1->val < list2->val) {
       list1->next = mergeTwoLists_ver02(list1->next, list2);

@@ -1,4 +1,5 @@
 // https://leetcode.com/problems/concatenation-of-array
+
 #include <iostream>
 #include <vector>
 

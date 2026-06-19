@@ -4,10 +4,10 @@
 #include <unordered_set>
 
 class Solution {
-public:
-  ListNode *deleteDuplicates_ver01(ListNode *head) {
-    ListNode *temp = head;
-    ListNode *current = head;
+ public:
+  ListNode* deleteDuplicates_ver01(ListNode* head) {
+    ListNode* temp = head;
+    ListNode* current = head;
     // 1 -> 1 -> 21 -> 1 -> 1 -> 1 -> 1 -> 1 -> nullptr
     while (current != nullptr && current->next != nullptr) {
       if (current->val == current->next->val) {

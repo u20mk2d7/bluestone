@@ -1,5 +1,3 @@
-#include <iostream>
-
 // https://leetcode.com/problems/remove-linked-list-elements
 
 /*
@@ -30,9 +28,11 @@
  * };
  */
 
+#include <iostream>
+
 class Solution {
-public:
-  ListNode *removeElements(ListNode *head, int val);
+ public:
+  ListNode* removeElements(ListNode* head, int val);
 };
 
-ListNode *Solution::removeElements(ListNode *head, int val) {}
+ListNode* Solution::removeElements(ListNode* head, int val) {}

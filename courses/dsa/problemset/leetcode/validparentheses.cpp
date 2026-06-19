@@ -5,6 +5,6 @@
 #include <string>
 
 class Solution {
-public:
+ public:
   bool isValid_01(std::string s) { return false; }
 };
