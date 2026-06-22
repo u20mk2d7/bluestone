@@ -22,6 +22,7 @@ target_include_directories(bluestone_core PUBLIC
 
 target_link_libraries(bluestone_core PUBLIC 
     bluestone_core_utils
+    bluestone_core_marketdata
     bluestone_pch
     Boost::boost
     quickfix::quickfix
