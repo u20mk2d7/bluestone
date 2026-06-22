@@ -22,11 +22,12 @@ Here is the raw, zero-allocation C++23 implementation.
 
 #include <algorithm>
 
-namespace Bluestone {
-  namespace MarketData {
+namespace bluestone {
+  namespace marketdata {
 
     // --- BOOT SEQUENCE (Cold Path) ---
-    OrderBook::OrderBook(size_t max_expected_orders, size_t max_price_levels) {
+    bluestone::marketdata::OrderBook::OrderBook(size_t max_expected_orders,
+                                                size_t max_price_levels) {
       // 🚀 THE PRE-ALLOCATION SHIELD
       // By reserving this memory on boot, we guarantee that inserting orders
       // during a volatile market spike will NEVER trigger a heap allocation or
@@ -165,8 +166,8 @@ namespace Bluestone {
       }
     }
 
-  }  // namespace MarketData
-}  // namespace Bluestone
+  }  // namespace marketdata
+}  // namespace bluestone
 
 /*
 The Architect's Warning: "The Drop of Death"I need you to look closely at the
