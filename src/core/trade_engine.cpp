@@ -10,7 +10,7 @@
 
 // Add this block near the top of trade_engine.cpp with your other includes:
 #if defined(__x86_64__) || defined(_M_X64)
-#include <emmintrin.h>  // Required for _mm_pause()
+  #include <emmintrin.h>  // Required for _mm_pause()
 #endif
 
 namespace bluestone {
@@ -20,10 +20,10 @@ namespace bluestone {
       : exchange_(std::move(exchange)),
         queue_(std::move(queue)),
         running_(false) {
-          std::cout << "[DataGatewayEngine] Constructure....\n";
-        }
+    std::cout << "[DataGatewayEngine] Constructure....\n";
+  }
 
-        //
+  //
   void DataGatewayEngine::run() {
     std::cout << "[DataGatewayEngine]: Running Exchange Connection...\n";
     exchange_->connect();
@@ -49,9 +49,8 @@ namespace bluestone {
 #if defined(__x86_64__) || defined(_M_X64)
         _mm_pause();  // Intel/AMD hardware pause
 #elif defined(__aarch64__)
-  // Apple Silicon / ARM hardware yield
-        asm volatile("yield" ::
-                         : "memory");
+        // Apple Silicon / ARM hardware yield
+        asm volatile("yield" ::: "memory");
 #endif
       }
     }
