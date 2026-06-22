@@ -1,23 +1,3 @@
-/*
-The Lock-Free Order Book (src/core/marketdata/order_book.hpp).
-
-If your Order Book is slow, your strategy calculates based on ghost prices, and
-you lose money. To make this sub-microsecond, we are enforcing three strict
-architectural rules:
-
-Integer Math Only: Floating-point numbers (double / float) take too many CPU
-cycles and suffer from precision loss. We store all prices as raw integer
-"ticks".
-
-Pre-allocated Hash Maps: We use Google's absl::flat_hash_map and reserve memory
-on boot so new or malloc is never called during live trading.
-
-Single-Writer Principle: Because this runs on your pinned EventLoopWorker core,
-we do not need std::mutex. The thread owns the memory exclusively.
-
-Here is the C++23 institutional header for your Order Book.
-*/
-
 #pragma once
 #ifndef BLUESTONE_CORE_MARKETDATA_ORDER_BOOK_HPP
 #define BLUESTONE_CORE_MARKETDATA_ORDER_BOOK_HPP

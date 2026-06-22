@@ -1,23 +1,3 @@
-/*
-It is time to bring the brain online. The header we just wrote was the
-blueprint; this .cpp file is the actual execution engine.
-
-When you write a High-Frequency Trading order book, you have to protect against
-two massive latency killers: Rehashing and Stack Unwinding.
-
-Here is exactly how we solve both in src/core/marketdata/order_book.cpp:
-
-In the constructor, we call .reserve() on our Abseil hash maps. This
-pre-allocates contiguous chunks of RAM during the bot's startup phase. Once
-trading begins, malloc is effectively dead.
-
-Every function is noexcept, giving the LLVM optimizer permission to strip out
-safety checks and inline the math directly into your CPU's L1 cache.
-
-Here is the raw, zero-allocation C++23 implementation.
-
-*/
-
 #include "order_book.hpp"
 
 #include <algorithm>
