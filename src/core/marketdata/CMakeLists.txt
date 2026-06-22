@@ -15,6 +15,6 @@ find_package(absl REQUIRED)
 target_link_libraries(bluestone_core_marketdata
 	PUBLIC 
 	Threads::Threads 
-	absl::absl
+	abseil::abseil
 )
 
