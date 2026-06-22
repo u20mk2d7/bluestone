@@ -10,7 +10,7 @@
 
 // Add this block near the top of trade_engine.cpp with your other includes:
 #if defined(__x86_64__) || defined(_M_X64)
-  #include <emmintrin.h>  // Required for _mm_pause()
+#include <emmintrin.h>  // Required for _mm_pause()
 #endif
 
 namespace bluestone {

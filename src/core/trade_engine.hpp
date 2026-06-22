@@ -1,13 +1,13 @@
 #pragma once
 #ifndef DATAGATEWAYENGINE_HPP
-  #define DATAGATEWAYENGINE_HPP
+#define DATAGATEWAYENGINE_HPP
 
-  #include <atomic>
-  #include <memory>
+#include <atomic>
+#include <memory>
 
-  #include "core/ipc/trade_queue.hpp"
-  #include "core/marketdata/order_book.hpp"
-  #include "gateway/interface/i_exchange_connector.hpp"
+#include "core/ipc/trade_queue.hpp"
+#include "core/marketdata/order_book.hpp"
+#include "gateway/interface/i_exchange_connector.hpp"
 
 namespace bluestone {
   class DataGatewayEngine {

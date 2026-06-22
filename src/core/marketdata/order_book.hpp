@@ -20,13 +20,13 @@ Here is the C++23 institutional header for your Order Book.
 
 #pragma once
 #ifndef BLUESTONE_CORE_MARKETDATA_ORDER_BOOK_HPP
-  #define BLUESTONE_CORE_MARKETDATA_ORDER_BOOK_HPP
+#define BLUESTONE_CORE_MARKETDATA_ORDER_BOOK_HPP
 
-  #include <cstdint>
-  #include <limits>
-  #include <vector>
+#include <cstdint>
+#include <limits>
+#include <vector>
 
-  #include "absl/container/flat_hash_map.h"
+#include "absl/container/flat_hash_map.h"
 
 namespace bluestone {
   namespace marketdata {
