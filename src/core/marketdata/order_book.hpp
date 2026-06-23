@@ -38,6 +38,21 @@ namespace bluestone {
     };
 
     class OrderBook {
+      private:
+      // Re-evaluates the BBO if a top-of-book order is modified/canceled
+      void update_bbo(Side side) noexcept;
+
+      // --- State Variables Best Bid/Offer ---
+      BBO current_bbo_;
+
+      // --- The Memory Arenas ---
+      // Maps OrderID -> Order object (O(1) lookup)
+      absl::flat_hash_map<uint64_t, Order> order_map_;
+
+      // Maps Price (in ticks) -> PriceLevel object (O(1) lookup)
+      absl::flat_hash_map<int64_t, PriceLevel> bid_levels_;
+      absl::flat_hash_map<int64_t, PriceLevel> ask_levels_;
+
      public:
       // Boot sequence: Pre-allocate everything so zero allocations happen in
       // the hot path
@@ -56,20 +71,6 @@ namespace bluestone {
         return current_bbo_;
       }
 
-     private:
-      // Re-evaluates the BBO if a top-of-book order is modified/canceled
-      void update_bbo(Side side) noexcept;
-
-      // --- State Variables ---
-      BBO current_bbo_;
-
-      // --- The Memory Arenas ---
-      // Maps OrderID -> Order object (O(1) lookup)
-      absl::flat_hash_map<uint64_t, Order> order_map_;
-
-      // Maps Price (in ticks) -> PriceLevel object (O(1) lookup)
-      absl::flat_hash_map<int64_t, PriceLevel> bid_levels_;
-      absl::flat_hash_map<int64_t, PriceLevel> ask_levels_;
     };
 
   }  // namespace marketdata

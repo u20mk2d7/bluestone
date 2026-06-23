@@ -3,30 +3,39 @@
 add_library(bluestone_pch INTERFACE)
 
 target_precompile_headers(bluestone_pch INTERFACE
-  <algorithm>
-  <functional>
-  <memory>
-  <regex>
-  <iostream>
-  <fstream>
-  <sstream>
-  <array>
+  <cstdint>
+  <cstddef>
+  <limits>
+  <vector>
   <map>
-  <set>
+  <unordered_map>
+  <array>
+  <list>
   <string>
   <string_view>
-  <unordered_map>
-  <unordered_set>
-  <vector>
-  <optional>
-  <tuple>
+  <format>
+  <algorithm>
   <utility>
+  <memory>
+  <functional>
+  <tuple>
+  <new>
+  <thread>
+  <mutex>
+  <chrono>
+  <fstream>
+  <filesystem>
+  <iostream>
+  <regex>
+  <sstream>
+  <set>
+  <unordered_set>
+  <optional>
   <variant>
   <atomic>
   <condition_variable>
+  <type_traits>
   <future>
-  <mutex>
-  <thread>
 )
 
 message(STATUS "Precompiled Headers (PCH) initialized.")

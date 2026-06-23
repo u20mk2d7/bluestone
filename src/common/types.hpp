@@ -1,4 +1,9 @@
-
+#pragma once
+#ifndef COMMON_TYPES_HPP
+#define COMMON_TYPES_HPP
+#include <iostream>
+#include <type_traits>
+#include <cstdint>
 
 namespace bluestone {
 struct NormalizeTick {
@@ -19,3 +24,6 @@ static_assert(std::is_trivially_copyable<NormalizeTick>::value,
               "NormalizeTick must be trivially copyable!");
 
 }  // namespace bluestone
+
+
+#endif  // COMMON_TYPES_HPP
