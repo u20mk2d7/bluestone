@@ -1,8 +1,8 @@
 #pragma once
 #ifndef BLUESTONE_CORE_MARKETDATA_ORDER_BOOK_HPP
 #define BLUESTONE_CORE_MARKETDATA_ORDER_BOOK_HPP
-
 #include <cstdint>
+#include <iostream>
 #include <limits>
 #include <vector>
 

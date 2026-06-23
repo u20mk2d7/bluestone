@@ -18,7 +18,7 @@ int gcd_naive(int a, int b) {
   return current_gcd;
 }
 
-/* https://en.wikipedia.org/wiki/Euclidean_division */
+// https://en.wikipedia.org/wiki/Euclidean_division
 int gcd_euclidean_remainder(long a, long b) {
   if (b == 0) return a;
 
