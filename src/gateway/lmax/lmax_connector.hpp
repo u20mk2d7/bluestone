@@ -9,12 +9,15 @@
 #include <quickfix/SessionSettings.h>
 #include <quickfix/ThreadedSocketInitiator.h>
 #include <quickfix/fix44/ExecutionReport.h>
+#include <quickfix/fix44/MarketDataRequest.h>
 #include <quickfix/fix44/MarketDataSnapshotFullRefresh.h>
 
+#include <iostream>
 #include <memory>
 #include <string>
 
 #include "core/ipc/trade_queue.hpp"
+#include "core/utils/tsc_clock.hpp"
 #include "gateway/interface/i_exchange_connector.hpp"
 #include "utils/config_loader.hpp"
 
@@ -25,16 +28,17 @@ namespace bluestone {
     //
    private:
     // --- Encapsulated QuickFIX State ---
-    bluestone::ExchangeConfig cfg_;
-    std::shared_ptr<bluestone::TradeQueue> queue_;
     std::unique_ptr<FIX::SessionSettings> settings_;
     std::unique_ptr<FIX::FileStoreFactory> store_factory_;
     std::unique_ptr<FIX::FileLogFactory> log_factory_;
     std::unique_ptr<FIX::ThreadedSocketInitiator> initiator_;
+
+    bluestone::utils::ExchangeConfig cfg_;
+    std::shared_ptr<bluestone::TradeQueue> queue_;
     //
 
    public:
-    explicit LMAXConnector(const bluestone::ExchangeConfig& cfg,
+    explicit LMAXConnector(const bluestone::utils::ExchangeConfig& cfg,
                            std::shared_ptr<bluestone::TradeQueue> queue);
 
     ~LMAXConnector() override;
@@ -70,6 +74,7 @@ namespace bluestone {
                    const FIX::SessionID& sessionID) override;
     void onMessage(const FIX44::MarketDataSnapshotFullRefresh& msg,
                    const FIX::SessionID& sessionID) override;
+
   };  // class LMAXConnector
 }  // namespace bluestone
 

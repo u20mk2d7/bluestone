@@ -12,11 +12,11 @@
 #include <string>
 
 namespace bluestone {
-  LMAXConnector::LMAXConnector(const bluestone::ExchangeConfig& cfg,
+  LMAXConnector::LMAXConnector(const bluestone::utils::ExchangeConfig& cfg,
                                std::shared_ptr<bluestone::TradeQueue> queue)
       : cfg_(cfg), queue_(std::move(queue)) {
     //
-    settings_ = std::make_unique<FIX::SessionSettings>(cfg.exchange_cfg);
+    settings_ = std::make_unique<FIX::SessionSettings>(cfg_.exchange_cfg);
     store_factory_ = std::make_unique<FIX::FileStoreFactory>(*settings_);
     log_factory_ = std::make_unique<FIX::FileLogFactory>(*settings_);
 
@@ -148,32 +148,49 @@ namespace bluestone {
   void LMAXConnector::onMessage(
       const FIX44::MarketDataSnapshotFullRefresh& message,
       const FIX::SessionID& sessionID) {
+    //
+    bluestone::NormalizeTick tick{};
+    tick.gateway_recv_tsc = bluestone::utils::TSCClock::now();
+    // uint64_t core_recv_tsc = bluestone::utils::TSCClock::now(); // Example:
+    // "Tick # 1,000,600"
+    //
     FIX::Symbol symbol;
-    if (message.isSetField(symbol)) message.get(symbol);
+    if (message.isSetField(symbol)) {
+      message.get(symbol);
+      tick.instrument_id = 4001;
+    }
 
-    std::cout << "\n[MARKET DATA] Price Update for: " << symbol.getValue()
-              << '\n';
-
-    // 1. Extract the NoMDEntries field to get the total count
-    FIX::NoMDEntries noMDEntries;
-    if (message.isSetField(noMDEntries)) {
-      message.get(noMDEntries);  // Get the count of repeating groups
-
+    // 2. Extract the NoMDEntries field to get the total count
+    FIX::NoMDEntries noMDEtries;
+    if (message.isSetField(noMDEtries)) {
+      message.get(noMDEtries);  // Get the count of repeating groups
       FIX44::MarketDataSnapshotFullRefresh::NoMDEntries group;
       FIX::MDEntryType entryType;
       FIX::MDEntryPx entryPx;
+      FIX::MDEntrySize entrySz;
 
-      // 2. Loop using the extracted value
-      for (int i = 1; i <= noMDEntries.getValue(); ++i) {
+      for (int i = 0; i < noMDEtries.getValue(); ++i) {
         message.getGroup(i, group);
         group.get(entryType);
         group.get(entryPx);
 
-        if (entryType == FIX::MDEntryType_BID) {
-          std::cout << "   BID: " << entryPx.getValue() << '\n';
-        } else if (entryType == FIX::MDEntryType_OFFER) {
-          std::cout << "   ASK: " << entryPx.getValue() << '\n';
+        if (group.isSetField(entrySz)) {
+          group.get(entrySz);
+        } else {
+          entrySz.setValue(0);
         }
+
+        if (entryType == FIX::MDEntryType_BID) {
+          tick.bid_price = entryPx.getValue();
+          tick.bid_qty = entrySz.getValue();
+        } else if (entryType == FIX::MDEntryType_OFFER) {
+          tick.ask_price = entryPx.getValue();
+          tick.ask_qty = entrySz.getValue();
+        }
+      }
+
+      if (queue_) {
+        queue_->push(tick);
       }
     }
   }

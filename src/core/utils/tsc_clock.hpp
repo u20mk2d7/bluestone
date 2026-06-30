@@ -12,31 +12,31 @@
 #endif
 
 namespace bluestone {
-namespace utils {
+  namespace utils {
 
-class TSCClock {
-  public:
-  // Forces the compiler to inline this directly into the execution path
-  // Zero function-call overhead.
-  [[nodiscard]] static inline uint64_t now() noexcept {
+    class TSCClock {
+     public:
+      // Forces the compiler to inline this directly into the execution path
+      // Zero function-call overhead.
+      [[nodiscard]] static inline uint64_t now() noexcept {
 #if defined(__x86_64__) || defined(_M_X64)
-    // Intel/AMD: Read the Time Stamp Counter directly from the CPU
-    // __rdtsc() executes in ~10-20 CPU cycles (insanely fast)
-    unsigned int aux;
-    return __rdtscp(&aux);
+        // Intel/AMD: Read the Time Stamp Counter directly from the CPU
+        // __rdtsc() executes in ~10-20 CPU cycles (insanely fast)
+        unsigned int aux;
+        return __rdtscp(&aux);
 #elif defined(__aarch64__)
-    // ARM / Apple Silicon (M1/M2/M3) equivalent
-    uint64_t val;
-    asm volatile("mrs %0, cntvct_el0" : "=r"(val));
-    return val;
+        // ARM / Apple Silicon (M1/M2/M3) equivalent
+        uint64_t val = 0;
+        asm volatile("mrs %0, cntvct_el0" : "=r"(val));
+        return val;
 #else
-    // Fallback for unsupported architectures (will be slower)
-    return 0;
+        // Fallback for unsupported architectures (will be slower)
+        return 0;
 #endif
-  }
-};
+      }
+    };
 
-}  // namespace utils
+  }  // namespace utils
 }  // namespace bluestone
 
 #endif  // BLUESTONE_CORE_UTILS_TSC_CLOCK_HPP
