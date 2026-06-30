@@ -22,10 +22,12 @@ if(APPLE)
   include(${CMAKE_SOURCE_DIR}/cmake/unix.cmake)
   add_compile_definitions(OS_MACOS=1)
   message(STATUS "Platform: macOS")
+
 elseif(UNIX AND NOT APPLE)
   include(${CMAKE_SOURCE_DIR}/cmake/linux.cmake)
   add_compile_definitions(OS_LINUX=1)
   message(STATUS "Platform: Linux")
+
 else()
   message(FATAL_ERROR "Unsupported platform!")
 endif()
@@ -37,14 +39,13 @@ add_subdirectory(src/core)
 add_subdirectory(src/utils)
 add_subdirectory(src/gateway)
 add_subdirectory(tests)
-#add_subdirectory(learning)
 
 # ==================== MAIN EXECUTABLE ====================
-add_executable(bluestone src/main.cpp)
+add_executable(${CMAKE_PROJECT_NAME} src/main.cpp)
 
-target_include_directories(bluestone PRIVATE ${CMAKE_SOURCE_DIR}/src)
+target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/src)
 
-target_link_libraries(bluestone PRIVATE 
+target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE 
   bluestone_core
   bluestone_utils
   bluestone_gateway
@@ -52,7 +53,7 @@ target_link_libraries(bluestone PRIVATE
   quickfix::quickfix
 )
 
-set_target_properties(bluestone PROPERTIES UNITY_BUILD ON)
+set_target_properties(${CMAKE_PROJECT_NAME} PROPERTIES UNITY_BUILD ON)
 
 message(STATUS "CMAKE_BINARY_DIR: ${CMAKE_BINARY_DIR}")
 message(STATUS "CMAKE_SOURCE_DIR: ${CMAKE_SOURCE_DIR}")
@@ -62,4 +63,4 @@ message(STATUS "Boost_INCLUDE_DIRS: ${Boost_INCLUDE_DIRS}")
 message(STATUS "absl_INCLUDE_DIRS: ${absl_INCLUDE_DIRS}")
 
 
-message(STATUS "bluestone configured successfully!")
+message(STATUS "${CMAKE_PROJECT_NAME} configured successfully!")

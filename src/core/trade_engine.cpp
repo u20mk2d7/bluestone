@@ -4,6 +4,7 @@
 #include <iostream>
 #include <memory>
 #include <utility>
+#include "core/utils/tsc_clock.hpp"
 
 #if defined(__x86_64__) || defined(_M_X64)
 #include <emmintrin.h>  // Required for _mm_pause()
