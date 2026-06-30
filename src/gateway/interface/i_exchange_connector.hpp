@@ -10,12 +10,15 @@
 
 namespace bluestone {
   class IExchangeConnector {
-   public:
-    virtual ~IExchangeConnector() = default;
+    public:
     IExchangeConnector() = default;
-    IExchangeConnector(const IExchangeConnector&) = delete;
-    IExchangeConnector& operator=(const IExchangeConnector&) = delete;
     IExchangeConnector(IExchangeConnector&&) = delete;
+    IExchangeConnector(const IExchangeConnector&) = delete;
+
+    virtual ~IExchangeConnector() = default;
+
+
+    IExchangeConnector& operator=(const IExchangeConnector&) = delete;
     IExchangeConnector& operator=(IExchangeConnector&&) = delete;
 
     virtual void connect() = 0;

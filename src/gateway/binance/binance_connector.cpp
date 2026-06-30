@@ -12,7 +12,7 @@
 
 namespace bluestone {
 
-  BinanceConnector::BinanceConnector(bluestone::ExchangeConfig* cfg,
+  BinanceConnector::BinanceConnector(bluestone::utils::ExchangeConfig* cfg,
                                      bluestone::TradeQueue* queue,
                                      boost::asio::io_context* ioc)
       : cfg_(cfg), queue_(queue), ioc_(ioc) {

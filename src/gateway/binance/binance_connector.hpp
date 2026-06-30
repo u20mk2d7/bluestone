@@ -16,7 +16,7 @@ namespace bluestone {
 
   class BinanceConnector : public bluestone::IExchangeConnector {
    private:
-    bluestone::ExchangeConfig* cfg_;  // Non-owning pointer to config
+    bluestone::utils::ExchangeConfig* cfg_;  // Non-owning pointer to config
     bluestone::TradeQueue* queue_;    // Lock-free queue (non-owning)
     boost::asio::io_context* ioc_;    // Worker thread's io_context
 
@@ -34,7 +34,7 @@ namespace bluestone {
     void process_market_data(const std::string& json_data);
 
    public:
-    explicit BinanceConnector(bluestone::ExchangeConfig* cfg,
+    explicit BinanceConnector(bluestone::utils::ExchangeConfig* cfg,
                               bluestone::TradeQueue* queue,
                               boost::asio::io_context* ioc);
 

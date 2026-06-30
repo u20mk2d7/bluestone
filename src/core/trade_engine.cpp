@@ -1,14 +1,10 @@
-//
 #include "trade_engine.hpp"
-
 #include "core/ipc/trade_queue.hpp"
-//
 #include <atomic>
 #include <iostream>
 #include <memory>
 #include <utility>
 
-// Add this block near the top of trade_engine.cpp with your other includes:
 #if defined(__x86_64__) || defined(_M_X64)
 #include <emmintrin.h>  // Required for _mm_pause()
 #endif
@@ -37,11 +33,15 @@ namespace bluestone {
       if (queue_->pop(tick)) {
         // This code executes within single-digit nanoseconds of the Gateway
         // pushing it.
-        //
         std::cout << "[TICK] InstID: " << tick.instrument_id
                   << " | Bid: " << tick.bid_price << " (" << tick.bid_qty << ")"
                   << " | Ask: " << tick.ask_price << " (" << tick.ask_qty
                   << ")\n";
+
+                  uint64_t core_recv_tsc = bluestone::utils::TSCClock::now();
+                  uint64_t latency_cycles = core_recv_tsc - tick.gateway_recv_tsc;
+
+        std::cout << "[LATENCY] Queue Transit: " << latency_cycles << " CPU cycles\n";
       } else {
 // QUEUE IS EMPTY. DO NOT SLEEP.
 // We gently yield the CPU cache line to let the Gateway thread write to
